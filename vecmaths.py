@@ -192,32 +192,33 @@ ScreenManager:
 
 
         MDRaisedButton:
-            text: 'Word 1'
+            id: one
+            text: 'Word 4'
             pos_hint: {"center_x":0.5, "y":0.05}
             size_hint: 0.8, 0.12
             font_style: 'H6'
             on_press: app.evaluate_odd()
 
         MDRaisedButton:
-            text: 'Word 2'
+            text: 'Word 3'
             pos_hint: {"center_x":0.5, "y":0.25}
             size_hint: 0.8, 0.12
             font_style: 'H6'
             on_press: app.evaluate_odd()
 
         MDRaisedButton:
-            text: 'Word 3'
+            text: 'Word 2'
             pos_hint: {"center_x":0.5, "y":0.45}
             size_hint: 0.8, 0.12
             font_style: 'H6'
             on_press: app.evaluate_odd()
 
         MDRaisedButton:
-            text: 'Word 4'
+            text: 'Word 1'
             pos_hint: {"center_x":0.5, "y":0.65}
             size_hint: 0.8, 0.12
             font_style: 'H6'
-            on_press: app.evaluate_odd()
+            on_press: app.set_odd_options()
 
         MDToolbar:
             id: toolbar
@@ -331,15 +332,15 @@ class wordMaths(MDApp):
             print('Error with download')
             raise
 
-        model = gensim.models.KeyedVectors.load_word2vec_format(path, binary=True, limit=30000)
-        rand_word = random.choice(model.index_to_key)
+        self.model = gensim.models.KeyedVectors.load_word2vec_format(path, binary=True, limit=30000)
+        rand_word = random.choice(self.model.index_to_key)
         print(rand_word)
         # will prob exclude words that have special chars, some in dataset seem to use hashtags as wildcards etc. uses underscores as spaces
         self.word = rand_word
-        word1 = random.choice(model.index_to_key)
-        word2 = random.choice(model.index_to_key)
-        word3 = random.choice(model.index_to_key)
-        ans = model.most_similar(positive=[word1, word2], negative=[word3])
+        word1 = random.choice(self.model.index_to_key)
+        word2 = random.choice(self.model.index_to_key)
+        word3 = random.choice(self.model.index_to_key)
+        ans = self.model.most_similar(positive=[word1, word2], negative=[word3])
 
         print ('{} + {} - {} = {}'.format(word1, word2, word3, ans))
 
@@ -347,11 +348,27 @@ class wordMaths(MDApp):
         pass
 
     def get_input(self):
-        answer = self.root.ids.ans.text
+        answer = self.ids.ans.text
         print(answer)
 
     def evaluate_odd(self):
+        # need to be able to set text of the buttons based on words in the question, then here evaluate whether correct
+
         print('clicked')
+
+    def set_odd_options(self):
+        self.odd_options = {}
+        base_word = random.choice(self.model.index_to_key)
+        related = self.model.most_similar(base_word)[:2]
+        unrelated = random.choice(self.model.index_to_key)
+        # and have a check to see that the unrelated is not also in the most similar longer list
+        self.odd_options[base_word] = False
+        self.odd_options[unrelated] = True
+
+        for i in related:
+            self.odd_options[i[0]] = False
+
+        print(self.odd_options)
 
 # running the app
 if __name__ == '__main__':
