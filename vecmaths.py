@@ -24,6 +24,7 @@ from kivymd.uix.label import MDLabel, MDIcon
 from datetime import datetime
 import gensim
 from tensorflow.keras.utils import get_file
+from kivy.uix.textinput import TextInput
 
 # creating child classes of screen
 class MainScreen(Screen):
@@ -32,8 +33,15 @@ class MainScreen(Screen):
 class MenuScreen(Screen):
     pass
 
+class OddScreen(Screen):
+    pass
+
 # creating a screen manager
 class Manager(ScreenManager):
+    pass
+
+# creating button class to be able to access
+class AnswerInput(TextInput):
     pass
 
 # made the window roughly phone sized to check how it will look there
@@ -53,6 +61,14 @@ ScreenManager:
             pos_hint: {'center_x':.5, 'center_y':.7}
             size_hint: 1.0, 0.2
             font_style: 'H3'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDLabel:
+            text: "Word Games with Word2Vec!"
+            pos_hint: {'center_x':.5, 'center_y':.4}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
             color: (1,1,1,1)
             halign: 'center'
 
@@ -82,19 +98,17 @@ ScreenManager:
 <MainScreen>:
     name: "Main"
     FloatLayout:
-        Image:
-            id: vid
-            size_hint: 1, 0.6
-            allow_stretch: True
-            keep_ratio: True
+        TextInput:
+            id: ans
+            size_hint: 1, 0.3
             pos_hint: {'center_x':0.5, 'top':0.8}
 
         MDRaisedButton:
-            text: app.word
+            text: 'Submit'
             pos_hint: {"x":0.0, "y":0.0}
             size_hint: 1.0, 0.12
             font_style: 'H6'
-            on_release: pass
+            on_press: app.get_input()
 
         MDToolbar:
             id: toolbar
@@ -109,14 +123,125 @@ ScreenManager:
         FloatLayout:
             size_hint: 1.0, 1.0
             MDLabel:
-                text: "Placeholder"
+                text: "Game Selection"
                 size_hint: 1.0, 0.1
                 pos_hint: {"x":0.3, "y":0.9}
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Odd One Out"
                 size_hint: 1.0, 0.09
                 pos_hint: {"x":0.0, "y":0.81}
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Odd'
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.72}
                 on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.63}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.54}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.45}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.36}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.27}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.18}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.09}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.0}
+                on_release: pass
+
+<OddScreen>:
+    name: "Odd"
+    FloatLayout:
+        MDLabel:
+            text: "Which word is the odd one out?"
+            pos_hint: {'center_x':.5, 'center_y':.85}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+
+        MDRaisedButton:
+            text: 'Word 1'
+            pos_hint: {"center_x":0.5, "y":0.05}
+            size_hint: 0.8, 0.12
+            font_style: 'H6'
+            on_press: app.evaluate_odd()
+
+        MDRaisedButton:
+            text: 'Word 2'
+            pos_hint: {"center_x":0.5, "y":0.25}
+            size_hint: 0.8, 0.12
+            font_style: 'H6'
+            on_press: app.evaluate_odd()
+
+        MDRaisedButton:
+            text: 'Word 3'
+            pos_hint: {"center_x":0.5, "y":0.45}
+            size_hint: 0.8, 0.12
+            font_style: 'H6'
+            on_press: app.evaluate_odd()
+
+        MDRaisedButton:
+            text: 'Word 4'
+            pos_hint: {"center_x":0.5, "y":0.65}
+            size_hint: 0.8, 0.12
+            font_style: 'H6'
+            on_press: app.evaluate_odd()
+
+        MDToolbar:
+            id: toolbar
+            title: 'Menu'
+            pos_hint: {'top': 1}
+            elevation: 15
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+        Widget:
+
+    MDNavigationDrawer:
+        id: nav_drawer
+        FloatLayout:
+            size_hint: 1.0, 1.0
+            MDLabel:
+                text: "Game Selection"
+                size_hint: 1.0, 0.1
+                pos_hint: {"x":0.3, "y":0.9}
+            MDRaisedButton:
+                text: "Odd One Out"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.81}
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Odd'
             MDRaisedButton:
                 text: "Placeholder"
                 size_hint: 1.0, 0.09
@@ -164,13 +289,14 @@ ScreenManager:
                 on_release: pass
 
 '''
-# note the above menu stuff placeholders may or may not use but keeping for the mo, eg if add multiple things in app
 
 class wordMaths(MDApp):
     word = ""
 
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
+        #changing window name from default
+        self.title = 'Word2Vec Maths'
         # setting some colour themes
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.theme_style = "Dark"
@@ -184,6 +310,12 @@ class wordMaths(MDApp):
         sm.add_widget(self.welcome_screen)
         self.main_screen = MainScreen()
         sm.add_widget(self.main_screen)
+        self.odd_screen = OddScreen()
+        sm.add_widget(self.odd_screen)
+
+        # input = AnswerInput()
+        # self.root.add_widget(input)
+
         # running load model to test working
         self.load_model()
 
@@ -202,13 +334,24 @@ class wordMaths(MDApp):
         model = gensim.models.KeyedVectors.load_word2vec_format(path, binary=True, limit=30000)
         rand_word = random.choice(model.index_to_key)
         print(rand_word)
-        # will prob exclude words that have special chars, some in dataset seem to use hashtags as wildcards etc.
+        # will prob exclude words that have special chars, some in dataset seem to use hashtags as wildcards etc. uses underscores as spaces
         self.word = rand_word
+        word1 = random.choice(model.index_to_key)
+        word2 = random.choice(model.index_to_key)
+        word3 = random.choice(model.index_to_key)
+        ans = model.most_similar(positive=[word1, word2], negative=[word3])
+
+        print ('{} + {} - {} = {}'.format(word1, word2, word3, ans))
 
     def maths_game(self):
-        # vaguely will get three words and present in the format word =/- ? = word
-        #and can maybe take top x most similar and give some points if not first option
         pass
+
+    def get_input(self):
+        answer = self.root.ids.ans.text
+        print(answer)
+
+    def evaluate_odd(self):
+        print('clicked')
 
 # running the app
 if __name__ == '__main__':
