@@ -25,6 +25,7 @@ from datetime import datetime
 import gensim
 from tensorflow.keras.utils import get_file
 from kivy.uix.textinput import TextInput
+from kivy.properties import ObjectProperty
 
 # creating child classes of screen
 class MainScreen(Screen):
@@ -116,7 +117,6 @@ ScreenManager:
             pos_hint: {'top': 1}
             elevation: 15
             left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
-        Widget:
 
     MDNavigationDrawer:
         id: nav_drawer
@@ -232,7 +232,7 @@ ScreenManager:
             pos_hint: {'top': 1}
             elevation: 15
             left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
-        Widget:
+
 
     MDNavigationDrawer:
         id: nav_drawer
@@ -299,7 +299,7 @@ ScreenManager:
 
 class wordMaths(MDApp):
     word = ""
-    
+
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
         self.odd_options = {"...":False, "...": False, "...":False, "...": False}
@@ -360,8 +360,10 @@ class wordMaths(MDApp):
 
     def evaluate_odd(self, selected):
         # need to be able to set text of the buttons based on words in the question, then here evaluate whether correct
-        selected = selected.text
-        # selected = list(self.odd_options)[2]
+        # selected = selected.text
+        selected = list(self.odd_options)[2]
+        # below is the key to accessing ids within screenmanager root obj 
+        print(self.root.get_screen('Odd').ids)
         if self.odd_options[selected] == True:
             print('correct')
         else:
