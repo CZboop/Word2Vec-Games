@@ -131,8 +131,10 @@ ScreenManager:
                 size_hint: 1.0, 0.09
                 pos_hint: {"x":0.0, "y":0.81}
                 on_release:
+                    app.set_odd_options()
                     root.manager.transition.direction='left'
                     root.manager.current = 'Odd'
+
             MDRaisedButton:
                 text: "Placeholder"
                 size_hint: 1.0, 0.09
@@ -180,6 +182,7 @@ ScreenManager:
                 on_release: pass
 
 <OddScreen>:
+    id: odd
     name: "Odd"
     FloatLayout:
         MDLabel:
@@ -192,33 +195,36 @@ ScreenManager:
 
 
         MDRaisedButton:
-            id: one
+            id: four
             text: 'Word 4'
             pos_hint: {"center_x":0.5, "y":0.05}
             size_hint: 0.8, 0.12
             font_style: 'H6'
-            on_press: app.evaluate_odd()
+            on_press: app.evaluate_odd(self)
 
         MDRaisedButton:
+            id: three
             text: 'Word 3'
             pos_hint: {"center_x":0.5, "y":0.25}
             size_hint: 0.8, 0.12
             font_style: 'H6'
-            on_press: app.evaluate_odd()
+            on_press: app.evaluate_odd(self)
 
         MDRaisedButton:
+            id: two
             text: 'Word 2'
             pos_hint: {"center_x":0.5, "y":0.45}
             size_hint: 0.8, 0.12
             font_style: 'H6'
-            on_press: app.evaluate_odd()
+            on_press: app.evaluate_odd(self)
 
         MDRaisedButton:
-            text: 'Word 1'
+            id: one
+            text: str(app.odd_options)
             pos_hint: {"center_x":0.5, "y":0.65}
             size_hint: 0.8, 0.12
             font_style: 'H6'
-            on_press: app.set_odd_options()
+            on_press: app.evaluate_odd(self)
 
         MDToolbar:
             id: toolbar
@@ -293,9 +299,10 @@ ScreenManager:
 
 class wordMaths(MDApp):
     word = ""
-
+    
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
+        self.odd_options = {"...":False, "...": False, "...":False, "...": False}
         #changing window name from default
         self.title = 'Word2Vec Maths'
         # setting some colour themes
@@ -351,9 +358,14 @@ class wordMaths(MDApp):
         answer = self.ids.ans.text
         print(answer)
 
-    def evaluate_odd(self):
+    def evaluate_odd(self, selected):
         # need to be able to set text of the buttons based on words in the question, then here evaluate whether correct
-
+        selected = selected.text
+        # selected = list(self.odd_options)[2]
+        if self.odd_options[selected] == True:
+            print('correct')
+        else:
+            print('incorrect')
         print('clicked')
 
     def set_odd_options(self):
@@ -369,6 +381,11 @@ class wordMaths(MDApp):
             self.odd_options[i[0]] = False
 
         print(self.odd_options)
+
+    def set_button_text(self):
+        app = MDApp.get_running_app()
+        print(app.root.ids)
+        # self.root.ids.odd.ids.one.text = 'yo'
 
 # running the app
 if __name__ == '__main__':
