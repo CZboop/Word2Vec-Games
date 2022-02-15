@@ -419,6 +419,7 @@ class wordMaths(MDApp):
     def back_to_odd(self, *args):
         self.root.transition.direction='right'
         self.root.current = 'Odd'
+        self.set_odd_options()
 
     def set_odd_options(self):
         self.odd_options = {}
@@ -431,6 +432,13 @@ class wordMaths(MDApp):
 
         for i in related:
             self.odd_options[i[0]] = False
+
+        keys =  list(self.odd_options.keys())
+        random.shuffle(keys)
+        shuffled_options = [(key, self.odd_options[key]) for key in keys]
+        self.odd_options = {}
+        for i,j in shuffled_options:
+            self.odd_options[i] = j
 
         print(self.odd_options)
         self.set_button_text()
