@@ -1,6 +1,6 @@
 # Word2Vec Games
 
-A cross-platform app made with Kivy and Python, using Gensim's word2vec model of word meanings/relationships to automatically generate questions for word games. Currently uses the Google News word vectors dataset. 
+A cross-platform app made with Kivy/KivyMD and Python, using Gensim's word2vec model of word meanings/relationships to automatically generate questions for word games. Currently uses the Google News word vectors dataset. 
 
 Currently has three games: 
 - Odd One Out. Two random words are chosen from within the dataset, and one of these has two related words found by the model. User scores a point if they select the word that is not related to the other three
