@@ -41,8 +41,15 @@ class OddScreen(Screen):
 class Manager(ScreenManager):
     pass
 
-# creating button class to be able to access
+# creating class to be able to access
 class AnswerInput(TextInput):
+    pass
+
+# creating screens for correct and incorrect answers
+class CorrectScreen(Screen):
+    pass
+
+class IncorrectScreen(Screen):
     pass
 
 # made the window roughly phone sized to check how it will look there
@@ -53,6 +60,9 @@ builder_str = '''
 ScreenManager:
     MenuScreen:
     MainScreen:
+    OddScreen:
+    CorrectScreen:
+    IncorrectScreen:
 
 <MenuScreen>:
     name: 'Menu'
@@ -181,6 +191,28 @@ ScreenManager:
                 pos_hint: {"x":0.0, "y":0.0}
                 on_release: pass
 
+<CorrectScreen>:
+    name: 'Correct'
+    id: correct
+    FloatLayout:
+        MDLabel:
+            text: 'CORRECT!'
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            font_style: 'H2'
+            color: (1,1,1,1)
+            halign: 'center'
+
+<IncorrectScreen>:
+    name: 'Incorrect'
+    id: incorrect
+    FloatLayout:
+        MDLabel:
+            text: 'INCORRECT :('
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            font_style: 'H2'
+            color: (1,1,1,1)
+            halign: 'center'
+            
 <OddScreen>:
     id: odd
     name: "Odd"
@@ -321,6 +353,11 @@ class wordMaths(MDApp):
         self.odd_screen = OddScreen()
         sm.add_widget(self.odd_screen)
 
+        self.correct_screen = CorrectScreen()
+        sm.add_widget(self.correct_screen)
+        self.incorrect_screen = IncorrectScreen()
+        sm.add_widget(self.incorrect_screen)
+
         # input = AnswerInput()
         # self.root.add_widget(input)
 
@@ -360,14 +397,18 @@ class wordMaths(MDApp):
 
     def evaluate_odd(self, selected):
         # need to be able to set text of the buttons based on words in the question, then here evaluate whether correct
-        # selected = selected.text
-        selected = list(self.odd_options)[2]
+        selected = selected.text
+        # selected = list(self.odd_options)[2]
         # below is the key to accessing ids within screenmanager root obj
-        print(self.root.get_screen('Odd').ids)
+        # print(self.root.get_screen('Odd').ids)
         if self.odd_options[selected] == True:
             print('correct')
+            self.root.transition.direction='left'
+            self.root.current = 'Correct'
         else:
             print('incorrect')
+            self.root.transition.direction='right'
+            self.root.current = 'Incorrect'
         print('clicked')
 
     def set_odd_options(self):
