@@ -61,7 +61,7 @@ class ScoresScreen(Screen):
 # made the window roughly phone sized to check how it will look there
 Window.size = (400,700)
 
-class wordMaths(MDApp):
+class wordGames(MDApp):
 
     #some properties for later use
     odd_correct = 0
@@ -75,7 +75,7 @@ class wordMaths(MDApp):
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
         #changing window name from default
-        self.title = 'Word2Vec Maths'
+        self.title = 'Word2Vec Games'
         # setting some colour themes
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.theme_style = "Dark"
@@ -142,14 +142,17 @@ class wordMaths(MDApp):
             self.root.current = 'Correct'
             Clock.schedule_once(self.back_to_maths, 2)
             self.maths_correct += 1
-            self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_correct)
-            self.root.get_screen('Scores').ids.maths_score.text = 'Word Maths Score: ' + str(self.maths_correct)
             self.maths_total += 1
+            self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_correct) + '/' + str(self.maths_total)
+            self.root.get_screen('Scores').ids.maths_score.text = 'Word Maths Score: ' + str(self.maths_correct) + '/' + str(self.maths_total)
+
         else:
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_maths, 2)
             self.maths_total += 1
+            self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_correct) + '/' + str(self.maths_total)
+            self.root.get_screen('Scores').ids.maths_score.text = 'Word Maths Score: ' + str(self.maths_correct) + '/' + str(self.maths_total)
 
         #later will prob do text processing which may affect how evaluate
         # also should strip in case user put space or pressed enter etc
@@ -169,14 +172,17 @@ class wordMaths(MDApp):
             self.root.current = 'Correct'
             Clock.schedule_once(self.back_to_odd, 2)
             self.odd_correct += 1
-            self.root.get_screen('Odd').ids.odd_scorebar.title = "Score: " + str(self.odd_correct)
-            self.root.get_screen('Scores').ids.odd_score.text = 'Odd One Out Score: ' + str(self.odd_correct)
             self.odd_total +=1
+            self.root.get_screen('Odd').ids.odd_scorebar.title = "Score: " + str(self.odd_correct) + '/' + str(self.odd_total)
+            self.root.get_screen('Scores').ids.odd_score.text = 'Odd One Out Score: ' + str(self.odd_correct) + '/' + str(self.odd_total)
+
         else:
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_odd, 2)
             self.odd_total += 1
+            self.root.get_screen('Odd').ids.odd_scorebar.title = "Score: " + str(self.odd_correct) + '/' + str(self.odd_total)
+            self.root.get_screen('Scores').ids.odd_score.text = 'Odd One Out Score: ' + str(self.odd_correct) + '/' + str(self.odd_total)
 
     def back_to_odd(self, *args):
         self.root.transition.direction='right'
@@ -247,15 +253,18 @@ class wordMaths(MDApp):
             self.root.current = 'Correct'
             Clock.schedule_once(self.back_to_closest, 2)
             self.closest_correct += 1
-            self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct)
-            self.root.get_screen('Scores').ids.closest_score.text = 'Closest Pair Score: ' + str(self.closest_score)
             self.closest_total += 1
+            self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct) + '/' + str(self.closest_total)
+            self.root.get_screen('Scores').ids.closest_score.text = 'Closest Pair Score: ' + str(self.closest_correct) + '/' + str(self.closest_total)
+
 
         else:
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_closest, 2)
             self.closest_total += 1
+            self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct) + '/' + str(self.closest_total)
+            self.root.get_screen('Scores').ids.closest_score.text = 'Closest Pair Score: ' + str(self.closest_correct) + '/' + str(self.closest_total)
 
 
     def back_to_closest(self, *args):
@@ -265,4 +274,4 @@ class wordMaths(MDApp):
 
 # running the app
 if __name__ == '__main__':
-    wordMaths().run()
+    wordGames().run()

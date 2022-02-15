@@ -11,7 +11,7 @@ ScreenManager:
     name: 'Menu'
     FloatLayout:
         MDLabel:
-            text: "Word2Vec Maths"
+            text: "Word2Vec Games"
             pos_hint: {'center_x':.5, 'center_y':.7}
             size_hint: 1.0, 0.2
             font_style: 'H3'
@@ -54,7 +54,7 @@ ScreenManager:
     FloatLayout:
         MDLabel:
             id: odd_score
-            text: 'Odd One Out Score: ' + str(app.odd_correct)
+            text: 'Odd One Out Score: ' + str(app.odd_correct) + '/' + str(app.odd_total)
             pos_hint: {'center_x': .5, 'top': 0.85}
             size_hint: 1.0, 0.2
             font_style: 'H5'
@@ -62,7 +62,7 @@ ScreenManager:
             halign: 'center'
         MDLabel:
             id: maths_score
-            text: 'Word Maths Score: ' + str(app.maths_correct)
+            text: 'Word Maths Score: ' + str(app.maths_correct) + '/' + str(app.maths_total)
             pos_hint: {'center_x': .5, 'top': 0.65}
             size_hint: 1.0, 0.2
             font_style: 'H5'
@@ -71,7 +71,7 @@ ScreenManager:
 
         MDLabel:
             id: closest_score
-            text: 'Closest Pair Score: ' + str(app.closest_correct)
+            text: 'Closest Pair Score: ' + str(app.closest_correct) + '/' + str(app.closest_total)
             pos_hint: {'center_x': .5, 'top': 0.45}
             size_hint: 1.0, 0.2
             font_style: 'H5'
@@ -84,6 +84,79 @@ ScreenManager:
             pos_hint: {'top': 1}
             elevation: 15
             left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            FloatLayout:
+                size_hint: 1.0, 1.0
+                MDLabel:
+                    text: "Game Selection"
+                    size_hint: 1.0, 0.1
+                    pos_hint: {"x":0.3, "y":0.9}
+                MDRaisedButton:
+                    text: "Odd One Out"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.81}
+                    on_release:
+                        app.set_odd_options()
+                        root.manager.transition.direction='left'
+                        root.manager.current = 'Odd'
+
+                MDRaisedButton:
+                    text: "Word Maths"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.72}
+                    on_release:
+                        app.set_maths_question()
+                        root.manager.transition.direction='left'
+                        root.manager.current = 'Maths'
+
+                MDRaisedButton:
+                    text: "Closest Pair"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.63}
+                    on_release:
+                        app.set_closest_pair()
+                        root.manager.transition.direction='left'
+                        root.manager.current = 'Closest'
+
+                MDRaisedButton:
+                    text: "Scores"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.54}
+                    on_release:
+                        root.manager.transition.direction='left'
+                        root.manager.current = 'Scores'
+                MDRaisedButton:
+                    text: "Placeholder"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.45}
+                    on_release: pass
+                MDRaisedButton:
+                    text: "Placeholder"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.36}
+                    on_release: pass
+                MDRaisedButton:
+                    text: "Placeholder"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.27}
+                    on_release: pass
+                MDRaisedButton:
+                    text: "Placeholder"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.18}
+                    on_release: pass
+                MDRaisedButton:
+                    text: "Placeholder"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.09}
+                    on_release: pass
+                MDRaisedButton:
+                    text: "Placeholder"
+                    size_hint: 1.0, 0.09
+                    pos_hint: {"x":0.0, "y":0.0}
+                    on_release: pass
 
 <MathsScreen>:
     name: "Maths"
@@ -119,7 +192,7 @@ ScreenManager:
 
         MDToolbar:
             id: maths_scorebar
-            title: 'Score: ' + str(app.maths_correct)
+            title: 'Score: ' + str(app.maths_correct) + '/' + str(app.maths_total)
             elevation: 15
             pos_hint: {'bottom': 1}
 
@@ -283,7 +356,7 @@ ScreenManager:
 
         MDToolbar:
             id: odd_scorebar
-            title: 'Score: ' + str(app.odd_correct)
+            title: 'Score: ' + str(app.odd_correct) + '/' + str(app.odd_total)
             elevation: 15
             pos_hint: {'bottom': 1}
 
@@ -409,7 +482,7 @@ ScreenManager:
 
         MDToolbar:
             id: closest_scorebar
-            title: 'Score: ' + str(app.closest_correct)
+            title: 'Score: ' + str(app.closest_correct) + '/' + str(app.closest_total)
             elevation: 15
             pos_hint: {'bottom': 1}
 
