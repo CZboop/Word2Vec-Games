@@ -416,7 +416,7 @@ ScreenManager:
             left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
 
         MDToolbar:
-            id: odd_scorebar
+            id: closest_scorebar
             title: 'Score: ' + str(app.closest_correct)
             elevation: 15
             pos_hint: {'bottom': 1}
@@ -635,31 +635,52 @@ class wordMaths(MDApp):
 
 
     def set_closest_pair(self):
-        pair1word1 = random.choice(self.model.index_to_key)
-        pair1word2 = random.choice([i[0] for i in self.model.most_similar(pair1word1, topn=20)])
-        self.pair1 = [pair1word1, pair1word2]
-        pair2word1 = random.choice(self.model.index_to_key)
-        pair2word2 = random.choice([i[0] for i in self.model.most_similar(pair2word1, topn=20)])
-        self.pair2 = [pair2word1, pair2word2]
-        pair3word1 = random.choice(self.model.index_to_key)
-        pair3word2 = random.choice([i[0] for i in self.model.most_similar(pair3word1, topn=50)])
-        self.pair3 = [pair3word1, pair3word2]
-        pair4word1 = random.choice(self.model.index_to_key)
-        pair4word2 = random.choice([i[0] for i in self.model.most_similar(pair4word1, topn=50)])
-        self.pair4 = [pair4word1, pair4word2]
+        try:
+            pair1word1 = random.choice(self.model.index_to_key)
+            pair1word2 = random.choice([i[0] for i in self.model.most_similar(pair1word1, topn=20)])
+            self.pair1 = [pair1word1, pair1word2]
+            pair2word1 = random.choice(self.model.index_to_key)
+            pair2word2 = random.choice([i[0] for i in self.model.most_similar(pair2word1, topn=50)])
+            self.pair2 = [pair2word1, pair2word2]
+            pair3word1 = random.choice(self.model.index_to_key)
+            pair3word2 = random.choice([i[0] for i in self.model.most_similar(pair3word1, topn=50)])
+            self.pair3 = [pair3word1, pair3word2]
+            pair4word1 = random.choice(self.model.index_to_key)
+            pair4word2 = random.choice([i[0] for i in self.model.most_similar(pair4word1, topn=50)])
+            self.pair4 = [pair4word1, pair4word2]
 
-        closest_pair = sorted([self.pair1, self.pair2, self.pair3, self.pair4], key= lambda x: self.model.similarity(x[0], x[1]))[-1]
+            self.closest_pair = sorted([self.pair1, self.pair2, self.pair3, self.pair4], key= lambda x: self.model.similarity(x[0], x[1]))[-1]
 
-        # print([(i, self.model.similarity(i[0], i[1])) for i in closest_pair])
+            print([(i, self.model.similarity(i[0], i[1])) for i in self.closest_pair])
 
-        self.root.get_screen('Closest').ids.pair_one.text = ", ".join(self.pair1)
-        self.root.get_screen('Closest').ids.pair_two.text = ", ".join(self.pair2)
-        self.root.get_screen('Closest').ids.pair_three.text = ", ".join(self.pair3)
-        self.root.get_screen('Closest').ids.pair_four.text = ", ".join(self.pair4)
+            self.root.get_screen('Closest').ids.pair_one.text = ", ".join(self.pair1)
+            self.root.get_screen('Closest').ids.pair_two.text = ", ".join(self.pair2)
+            self.root.get_screen('Closest').ids.pair_three.text = ", ".join(self.pair3)
+            self.root.get_screen('Closest').ids.pair_four.text = ", ".join(self.pair4)
+
+        # was getting ocassional gensim error with similarity comparison, this seems to fix although would be good to revisit
+        except:
+            self.set_closest_pair()
 
 
-    def evaluate_closest(self):
-        pass
+    def evaluate_closest(self, selected):
+        if selected.text.split(", ") == self.closest_pair:
+            self.root.transition.direction='left'
+            self.root.current = 'Correct'
+            Clock.schedule_once(self.back_to_closest, 2)
+            self.closest_correct += 1
+            self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct)
+
+        else:
+            self.root.transition.direction='right'
+            self.root.current = 'Incorrect'
+            Clock.schedule_once(self.back_to_closest, 2)
+
+
+    def back_to_closest(self, *args):
+        self.root.transition.direction='right'
+        self.root.current = 'Closest'
+        self.set_closest_pair()
 
 # running the app
 if __name__ == '__main__':
