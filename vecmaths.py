@@ -42,10 +42,6 @@ class OddScreen(Screen):
 class Manager(ScreenManager):
     pass
 
-# creating class to be able to access
-class AnswerInput(TextInput):
-    pass
-
 # creating screens for correct and incorrect answers
 class CorrectScreen(Screen):
     pass
@@ -54,7 +50,7 @@ class IncorrectScreen(Screen):
     pass
 
 # made the window roughly phone sized to check how it will look there
-Window.size = (450,750)
+Window.size = (400,700)
 
 # .kv string to set out the layout and contents of the app
 builder_str = '''
@@ -104,8 +100,9 @@ ScreenManager:
             pos_hint: {'center_x': .5, 'center_y': .2}
             font_style: 'H5'
             on_release:
+                app.set_odd_options()
                 root.manager.transition.direction='left'
-                root.manager.current = 'Main'
+                root.manager.current = 'Odd'
 
 <MainScreen>:
     name: "Main"
@@ -220,7 +217,7 @@ ScreenManager:
     FloatLayout:
         MDLabel:
             text: "Which word is the odd one out?"
-            pos_hint: {'center_x':.5, 'center_y':.85}
+            pos_hint: {'center_x':.5, 'y':.73}
             size_hint: 1.0, 0.2
             font_style: 'H5'
             color: (1,1,1,1)
@@ -230,24 +227,24 @@ ScreenManager:
         MDRaisedButton:
             id: four
             text: 'Word 4'
-            pos_hint: {"center_x":0.5, "y":0.05}
-            size_hint: 0.8, 0.12
+            pos_hint: {"center_x":0.5, "y":0.2}
+            size_hint: 0.8, 0.1
             font_style: 'H6'
             on_press: app.evaluate_odd(self)
 
         MDRaisedButton:
             id: three
             text: 'Word 3'
-            pos_hint: {"center_x":0.5, "y":0.25}
-            size_hint: 0.8, 0.12
+            pos_hint: {"center_x":0.5, "y":0.35}
+            size_hint: 0.8, 0.1
             font_style: 'H6'
             on_press: app.evaluate_odd(self)
 
         MDRaisedButton:
             id: two
             text: 'Word 2'
-            pos_hint: {"center_x":0.5, "y":0.45}
-            size_hint: 0.8, 0.12
+            pos_hint: {"center_x":0.5, "y":0.5}
+            size_hint: 0.8, 0.1
             font_style: 'H6'
             on_press: app.evaluate_odd(self)
 
@@ -255,7 +252,7 @@ ScreenManager:
             id: one
             text: str(app.odd_options)
             pos_hint: {"center_x":0.5, "y":0.65}
-            size_hint: 0.8, 0.12
+            size_hint: 0.8, 0.1
             font_style: 'H6'
             on_press: app.evaluate_odd(self)
 
@@ -265,6 +262,12 @@ ScreenManager:
             pos_hint: {'top': 1}
             elevation: 15
             left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+        MDToolbar:
+            id: scorebar
+            title: 'Score: ' + str(app.odd_correct)
+            elevation: 15
+            pos_hint: {'bottom': 1}
 
 
     MDNavigationDrawer:
@@ -332,6 +335,9 @@ ScreenManager:
 
 class wordMaths(MDApp):
     word = ""
+    #some properties for later use
+    odd_correct = 0
+    odd_wrong = 0
 
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
@@ -358,9 +364,6 @@ class wordMaths(MDApp):
         sm.add_widget(self.correct_screen)
         self.incorrect_screen = IncorrectScreen()
         sm.add_widget(self.incorrect_screen)
-
-        # input = AnswerInput()
-        # self.root.add_widget(input)
 
         # running load model to test working
         self.load_model()
@@ -407,12 +410,15 @@ class wordMaths(MDApp):
             self.root.transition.direction='left'
             self.root.current = 'Correct'
             Clock.schedule_once(self.back_to_odd, 2)
+            self.odd_correct += 1
+            self.root.get_screen('Odd').ids.scorebar.title = "Score: " + str(self.odd_correct)
 
         else:
             print('incorrect')
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_odd, 2)
+            self.odd_wrong += 1
 
         print('clicked')
 
