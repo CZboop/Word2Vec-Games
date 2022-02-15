@@ -362,7 +362,7 @@ class wordMaths(MDApp):
         # need to be able to set text of the buttons based on words in the question, then here evaluate whether correct
         # selected = selected.text
         selected = list(self.odd_options)[2]
-        # below is the key to accessing ids within screenmanager root obj 
+        # below is the key to accessing ids within screenmanager root obj
         print(self.root.get_screen('Odd').ids)
         if self.odd_options[selected] == True:
             print('correct')
@@ -383,10 +383,15 @@ class wordMaths(MDApp):
             self.odd_options[i[0]] = False
 
         print(self.odd_options)
+        self.set_button_text()
 
     def set_button_text(self):
         app = MDApp.get_running_app()
         print(app.root.ids)
+        self.root.get_screen('Odd').ids.one.text = list(self.odd_options.keys())[0]
+        self.root.get_screen('Odd').ids.two.text = list(self.odd_options.keys())[1]
+        self.root.get_screen('Odd').ids.three.text = list(self.odd_options.keys())[2]
+        self.root.get_screen('Odd').ids.four.text = list(self.odd_options.keys())[3]
         # self.root.ids.odd.ids.one.text = 'yo'
 
 # running the app
