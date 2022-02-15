@@ -12,9 +12,10 @@ ScreenManager:
     FloatLayout:
         MDLabel:
             text: "Word2Vec Games"
-            pos_hint: {'center_x':.5, 'center_y':.7}
+            pos_hint: {'center_x':.5, 'center_y':.78}
             size_hint: 1.0, 0.2
-            font_style: 'H3'
+            font_style: 'H4'
+            font_size: '60sp'
             color: (1,1,1,1)
             halign: 'center'
 
@@ -32,11 +33,11 @@ ScreenManager:
             halign: 'center'
 
         MDIcon:
-            icon: 'book'
+            icon: 'bookshelf'
             pos_hint: {'center_x':.5, 'center_y':.55}
             halign: 'center'
         MDIcon:
-            icon: 'format-list-checkbox'
+            icon: 'brain'
             pos_hint: {'center_x':.75, 'center_y':.55}
             halign: 'center'
 
@@ -78,6 +79,15 @@ ScreenManager:
             color: (1,1,1,1)
             halign: 'center'
 
+        MDLabel:
+            id: total_score
+            text: 'Total: 0% Correct'
+            pos_hint: {'center_x': .5, 'top': 0.25}
+            size_hint: 1.0, 0.2
+            font_style: 'H4'
+            color: (1,1,1,1)
+            halign: 'center'
+
         MDToolbar:
             id: toolbar
             title: 'Menu'
@@ -92,71 +102,49 @@ ScreenManager:
                 MDLabel:
                     text: "Game Selection"
                     size_hint: 1.0, 0.1
-                    pos_hint: {"x":0.3, "y":0.9}
+                    pos_hint: {"center_x":0.8, "y":0.9}
+                    font_size: Window.width/20
                 MDRaisedButton:
                     text: "Odd One Out"
-                    size_hint: 1.0, 0.09
-                    pos_hint: {"x":0.0, "y":0.81}
+                    size_hint: 1.0, 0.18
+                    pos_hint: {"x":0.0, "y":0.72}
+                    font_size: Window.width/20
                     on_release:
-                        app.set_odd_options()
                         root.manager.transition.direction='left'
                         root.manager.current = 'Odd'
-
                 MDRaisedButton:
                     text: "Word Maths"
-                    size_hint: 1.0, 0.09
-                    pos_hint: {"x":0.0, "y":0.72}
+                    size_hint: 1.0, 0.18
+                    pos_hint: {"x":0.0, "y":0.54}
+                    font_size: Window.width/20
                     on_release:
                         app.set_maths_question()
                         root.manager.transition.direction='left'
                         root.manager.current = 'Maths'
-
                 MDRaisedButton:
                     text: "Closest Pair"
-                    size_hint: 1.0, 0.09
-                    pos_hint: {"x":0.0, "y":0.63}
+                    size_hint: 1.0, 0.18
+                    pos_hint: {"x":0.0, "y":0.36}
+                    font_size: Window.width/20
                     on_release:
                         app.set_closest_pair()
                         root.manager.transition.direction='left'
                         root.manager.current = 'Closest'
-
                 MDRaisedButton:
                     text: "Scores"
-                    size_hint: 1.0, 0.09
-                    pos_hint: {"x":0.0, "y":0.54}
+                    size_hint: 1.0, 0.18
+                    pos_hint: {"x":0.0, "y":0.18}
+                    font_size: Window.width/20
                     on_release:
                         root.manager.transition.direction='left'
                         root.manager.current = 'Scores'
                 MDRaisedButton:
                     text: "Placeholder"
-                    size_hint: 1.0, 0.09
-                    pos_hint: {"x":0.0, "y":0.45}
-                    on_release: pass
-                MDRaisedButton:
-                    text: "Placeholder"
-                    size_hint: 1.0, 0.09
-                    pos_hint: {"x":0.0, "y":0.36}
-                    on_release: pass
-                MDRaisedButton:
-                    text: "Placeholder"
-                    size_hint: 1.0, 0.09
-                    pos_hint: {"x":0.0, "y":0.27}
-                    on_release: pass
-                MDRaisedButton:
-                    text: "Placeholder"
-                    size_hint: 1.0, 0.09
-                    pos_hint: {"x":0.0, "y":0.18}
-                    on_release: pass
-                MDRaisedButton:
-                    text: "Placeholder"
-                    size_hint: 1.0, 0.09
-                    pos_hint: {"x":0.0, "y":0.09}
-                    on_release: pass
-                MDRaisedButton:
-                    text: "Placeholder"
-                    size_hint: 1.0, 0.09
+                    size_hint: 1.0, 0.18
                     pos_hint: {"x":0.0, "y":0.0}
+                    font_size: Window.width/20
                     on_release: pass
+
 
 <MathsScreen>:
     name: "Maths"
@@ -203,71 +191,49 @@ ScreenManager:
             MDLabel:
                 text: "Game Selection"
                 size_hint: 1.0, 0.1
-                pos_hint: {"x":0.3, "y":0.9}
+                pos_hint: {"center_x":0.8, "y":0.9}
+                font_size: Window.width/20
             MDRaisedButton:
                 text: "Odd One Out"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.81}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.72}
+                font_size: Window.width/20
                 on_release:
-                    app.set_odd_options()
                     root.manager.transition.direction='left'
                     root.manager.current = 'Odd'
-
             MDRaisedButton:
                 text: "Word Maths"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.72}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.54}
+                font_size: Window.width/20
                 on_release:
                     app.set_maths_question()
                     root.manager.transition.direction='left'
                     root.manager.current = 'Maths'
-
             MDRaisedButton:
                 text: "Closest Pair"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.63}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.36}
+                font_size: Window.width/20
                 on_release:
                     app.set_closest_pair()
                     root.manager.transition.direction='left'
                     root.manager.current = 'Closest'
-
             MDRaisedButton:
                 text: "Scores"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.54}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.18}
+                font_size: Window.width/20
                 on_release:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Scores'
             MDRaisedButton:
                 text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.45}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.36}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.27}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.18}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.09}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
+                size_hint: 1.0, 0.18
                 pos_hint: {"x":0.0, "y":0.0}
+                font_size: Window.width/20
                 on_release: pass
+
 
 <CorrectScreen>:
     canvas.before:
@@ -367,67 +333,49 @@ ScreenManager:
             MDLabel:
                 text: "Game Selection"
                 size_hint: 1.0, 0.1
-                pos_hint: {"x":0.3, "y":0.9}
+                pos_hint: {"center_x":0.8, "y":0.9}
+                font_size: Window.width/20
             MDRaisedButton:
                 text: "Odd One Out"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.81}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.72}
+                font_size: Window.width/20
                 on_release:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Odd'
             MDRaisedButton:
                 text: "Word Maths"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.72}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.54}
+                font_size: Window.width/20
                 on_release:
                     app.set_maths_question()
                     root.manager.transition.direction='left'
                     root.manager.current = 'Maths'
             MDRaisedButton:
                 text: "Closest Pair"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.63}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.36}
+                font_size: Window.width/20
                 on_release:
                     app.set_closest_pair()
                     root.manager.transition.direction='left'
                     root.manager.current = 'Closest'
             MDRaisedButton:
                 text: "Scores"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.54}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.18}
+                font_size: Window.width/20
                 on_release:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Scores'
             MDRaisedButton:
                 text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.45}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.36}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.27}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.18}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.09}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
+                size_hint: 1.0, 0.18
                 pos_hint: {"x":0.0, "y":0.0}
+                font_size: Window.width/20
                 on_release: pass
+
 
 <ClosestScreen>:
     id: closest
@@ -493,64 +441,45 @@ ScreenManager:
             MDLabel:
                 text: "Game Selection"
                 size_hint: 1.0, 0.1
-                pos_hint: {"x":0.3, "y":0.9}
+                pos_hint: {"center_x":0.8, "y":0.9}
+                font_size: Window.width/20
             MDRaisedButton:
                 text: "Odd One Out"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.81}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.72}
+                font_size: Window.width/20
                 on_release:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Odd'
             MDRaisedButton:
                 text: "Word Maths"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.72}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.54}
+                font_size: Window.width/20
                 on_release:
                     app.set_maths_question()
                     root.manager.transition.direction='left'
                     root.manager.current = 'Maths'
             MDRaisedButton:
                 text: "Closest Pair"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.63}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.36}
+                font_size: Window.width/20
                 on_release:
                     app.set_closest_pair()
                     root.manager.transition.direction='left'
                     root.manager.current = 'Closest'
             MDRaisedButton:
                 text: "Scores"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.54}
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.18}
+                font_size: Window.width/20
                 on_release:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Scores'
             MDRaisedButton:
                 text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.45}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.36}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.27}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.18}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
-                pos_hint: {"x":0.0, "y":0.09}
-                on_release: pass
-            MDRaisedButton:
-                text: "Placeholder"
-                size_hint: 1.0, 0.09
+                size_hint: 1.0, 0.18
                 pos_hint: {"x":0.0, "y":0.0}
+                font_size: Window.width/20
                 on_release: pass
