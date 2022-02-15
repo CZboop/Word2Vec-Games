@@ -1,0 +1,441 @@
+ScreenManager:
+    MenuScreen:
+    MathsScreen:
+    OddScreen:
+    CorrectScreen:
+    IncorrectScreen:
+    ClosestScreen:
+
+<MenuScreen>:
+    name: 'Menu'
+    FloatLayout:
+        MDLabel:
+            text: "Word2Vec Maths"
+            pos_hint: {'center_x':.5, 'center_y':.7}
+            size_hint: 1.0, 0.2
+            font_style: 'H3'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDLabel:
+            text: "Word Games with Word2Vec!"
+            pos_hint: {'center_x':.5, 'center_y':.4}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDIcon:
+            icon: 'abacus'
+            pos_hint: {'center_x':.25, 'center_y':.55}
+            halign: 'center'
+
+        MDIcon:
+            icon: 'book'
+            pos_hint: {'center_x':.5, 'center_y':.55}
+            halign: 'center'
+        MDIcon:
+            icon: 'format-list-checkbox'
+            pos_hint: {'center_x':.75, 'center_y':.55}
+            halign: 'center'
+
+        MDRaisedButton:
+            text: 'Begin!'
+            size_hint: 0.6, 0.1
+            pos_hint: {'center_x': .5, 'center_y': .2}
+            font_style: 'H5'
+            on_release:
+                app.set_odd_options()
+                root.manager.transition.direction='left'
+                root.manager.current = 'Odd'
+
+<MathsScreen>:
+    name: "Maths"
+    FloatLayout:
+        MDLabel:
+            id: maths_question
+            text: "Test"
+            pos_hint: {'center_x': .5, 'top': 0.85}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+
+        TextInput:
+            id: maths_ans
+            size_hint: 0.8, 0.05
+            pos_hint: {'center_x':0.5, 'top':0.62}
+
+        MDRaisedButton:
+            text: 'Submit'
+            pos_hint: {"center_x":0.5, "y":0.3}
+            size_hint: 0.8, 0.1
+            font_style: 'H6'
+            on_press: app.evaluate_maths_q()
+
+        MDToolbar:
+            id: toolbar
+            title: 'Menu'
+            pos_hint: {'top': 1}
+            elevation: 15
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+        MDToolbar:
+            id: maths_scorebar
+            title: 'Score: ' + str(app.maths_score)
+            elevation: 15
+            pos_hint: {'bottom': 1}
+
+    MDNavigationDrawer:
+        id: nav_drawer
+        FloatLayout:
+            size_hint: 1.0, 1.0
+            MDLabel:
+                text: "Game Selection"
+                size_hint: 1.0, 0.1
+                pos_hint: {"x":0.3, "y":0.9}
+            MDRaisedButton:
+                text: "Odd One Out"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.81}
+                on_release:
+                    app.set_odd_options()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Odd'
+
+            MDRaisedButton:
+                text: "Word Maths"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.72}
+                on_release:
+                    app.set_maths_question()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Maths'
+
+            MDRaisedButton:
+                text: "Closest Pair"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.63}
+                on_release:
+                    app.set_closest_pair()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Closest'
+
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.54}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.45}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.36}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.27}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.18}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.09}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.0}
+                on_release: pass
+
+<CorrectScreen>:
+    canvas.before:
+        Color:
+            rgba: 0, 1, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    name: 'Correct'
+    id: correct
+    FloatLayout:
+        MDLabel:
+            text: 'CORRECT!'
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            font_style: 'H2'
+            color: (0,0,0,1)
+            halign: 'center'
+
+<IncorrectScreen>:
+    canvas.before:
+        Color:
+            rgba: 1, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    name: 'Incorrect'
+    id: incorrect
+    FloatLayout:
+        MDLabel:
+            text: 'INCORRECT :('
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            font_style: 'H2'
+            color: (0,0,0,1)
+            halign: 'center'
+
+<OddScreen>:
+    id: odd
+    name: "Odd"
+    FloatLayout:
+        MDLabel:
+            text: "Which word is the odd one out?"
+            pos_hint: {'center_x':.5, 'y':.73}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDRaisedButton:
+            id: four
+            text: 'Word 4'
+            pos_hint: {"center_x":0.5, "y":0.2}
+            size_hint: 0.8, 0.1
+            font_style: 'H6'
+            on_press: app.evaluate_odd(self)
+
+        MDRaisedButton:
+            id: three
+            text: 'Word 3'
+            pos_hint: {"center_x":0.5, "y":0.35}
+            size_hint: 0.8, 0.1
+            font_style: 'H6'
+            on_press: app.evaluate_odd(self)
+
+        MDRaisedButton:
+            id: two
+            text: 'Word 2'
+            pos_hint: {"center_x":0.5, "y":0.5}
+            size_hint: 0.8, 0.1
+            font_style: 'H6'
+            on_press: app.evaluate_odd(self)
+
+        MDRaisedButton:
+            id: one
+            text: str(app.odd_options)
+            pos_hint: {"center_x":0.5, "y":0.65}
+            size_hint: 0.8, 0.1
+            font_style: 'H6'
+            on_press: app.evaluate_odd(self)
+
+        MDToolbar:
+            id: toolbar
+            title: 'Menu'
+            pos_hint: {'top': 1}
+            elevation: 15
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+        MDToolbar:
+            id: odd_scorebar
+            title: 'Score: ' + str(app.odd_correct)
+            elevation: 15
+            pos_hint: {'bottom': 1}
+
+    MDNavigationDrawer:
+        id: nav_drawer
+        FloatLayout:
+            size_hint: 1.0, 1.0
+            MDLabel:
+                text: "Game Selection"
+                size_hint: 1.0, 0.1
+                pos_hint: {"x":0.3, "y":0.9}
+            MDRaisedButton:
+                text: "Odd One Out"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.81}
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Odd'
+            MDRaisedButton:
+                text: "Word Maths"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.72}
+                on_release:
+                    app.set_maths_question()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Maths'
+            MDRaisedButton:
+                text: "Closest Pair"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.63}
+                on_release:
+                    app.set_closest_pair()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Closest'
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.54}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.45}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.36}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.27}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.18}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.09}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.0}
+                on_release: pass
+
+<ClosestScreen>:
+    id: closest
+    name: "Closest"
+    FloatLayout:
+        MDLabel:
+            text: "Which pair is the most related?"
+            pos_hint: {'center_x':.5, 'y':.73}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDRaisedButton:
+            id: pair_four
+            text: '...'
+            pos_hint: {"center_x":0.5, "y":0.2}
+            size_hint: 0.9, 0.1
+            font_size: '20sp'
+            on_press: app.evaluate_closest(self)
+
+        MDRaisedButton:
+            id: pair_three
+            text: '...'
+            pos_hint: {"center_x":0.5, "y":0.35}
+            size_hint: 0.9, 0.1
+            font_size: '20sp'
+            on_press: app.evaluate_closest(self)
+
+        MDRaisedButton:
+            id: pair_two
+            text: '...'
+            pos_hint: {"center_x":0.5, "y":0.5}
+            size_hint: 0.9, 0.1
+            font_size: '20sp'
+            on_press: app.evaluate_closest(self)
+
+        MDRaisedButton:
+            id: pair_one
+            text: '...'
+            pos_hint: {"center_x":0.5, "y":0.65}
+            size_hint: 0.9, 0.1
+            font_size: '20sp'
+            on_press: app.evaluate_closest(self)
+
+        MDToolbar:
+            id: toolbar
+            title: 'Menu'
+            pos_hint: {'top': 1}
+            elevation: 15
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+        MDToolbar:
+            id: closest_scorebar
+            title: 'Score: ' + str(app.closest_correct)
+            elevation: 15
+            pos_hint: {'bottom': 1}
+
+    MDNavigationDrawer:
+        id: nav_drawer
+        FloatLayout:
+            size_hint: 1.0, 1.0
+            MDLabel:
+                text: "Game Selection"
+                size_hint: 1.0, 0.1
+                pos_hint: {"x":0.3, "y":0.9}
+            MDRaisedButton:
+                text: "Odd One Out"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.81}
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Odd'
+            MDRaisedButton:
+                text: "Word Maths"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.72}
+                on_release:
+                    app.set_maths_question()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Maths'
+            MDRaisedButton:
+                text: "Closest Pair"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.63}
+                on_release:
+                    app.set_closest_pair()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Closest'
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.54}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.45}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.36}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.27}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.18}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.09}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.0}
+                on_release: pass
