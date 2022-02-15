@@ -118,7 +118,7 @@ ScreenManager:
 
 
         TextInput:
-            id: ans
+            id: maths_ans
             size_hint: 1, 0.2
             pos_hint: {'center_x':0.5, 'top':0.7}
 
@@ -127,7 +127,7 @@ ScreenManager:
             pos_hint: {"x":0.0, "y":0.0}
             size_hint: 1.0, 0.12
             font_style: 'H6'
-            on_press: app.get_input()
+            on_press: app.evaluate_maths_q()
 
         MDToolbar:
             id: toolbar
@@ -398,23 +398,39 @@ class wordMaths(MDApp):
         self.model = gensim.models.KeyedVectors.load_word2vec_format(path, binary=True, limit=30000)
 
     def set_maths_question(self):
-        rand_word = random.choice(self.model.index_to_key)
-        print(rand_word)
         # will prob exclude words that have special chars, some in dataset seem to use hashtags as wildcards etc. uses underscores as spaces
-        self.word = rand_word
+
         word1 = random.choice(self.model.index_to_key)
         word2 = random.choice(self.model.index_to_key)
         word3 = random.choice(self.model.index_to_key)
-        ans = self.model.most_similar(positive=[word1, word2])[0][0]
+        ans = self.model.most_similar(positive=[word1, word2])
+        self.maths_ans = ans # this is the list of tuples and later will get values and can check if top match etc
+        print(self.maths_ans[0][0], self.maths_ans[5][0])
 
-        self.root.get_screen('Maths').ids.maths_question.text =  '{} + {} = {}'.format(word1, word2, ans)
+        self.root.get_screen('Maths').ids.maths_question.text =  '{} + {} = ?'.format(word1, word2)
 
-    def maths_game(self):
-        pass
+    def evaluate_maths_q(self):
+        user_ans = self.root.get_screen('Maths').ids.maths_ans.text.lower()
+                
+        if user_ans in [i[0].lower() for i in self.maths_ans]:
+            print('correct')
+            self.root.transition.direction='left'
+            self.root.current = 'Correct'
+            Clock.schedule_once(self.back_to_maths, 2)
+        else:
+            print('incorrect')
+            self.root.transition.direction='left'
+            self.root.current = 'Incorrect'
+            Clock.schedule_once(self.back_to_maths, 2)
 
-    def get_input(self):
-        answer = self.ids.ans.text
-        print(answer)
+        #later will prob do text processing which may affect how evaluate
+
+    def back_to_maths(self, *args):
+        self.root.transition.direction='right'
+        self.root.current = 'Maths'
+        self.root.get_screen('Maths').ids.maths_ans.text = ""
+        self.set_maths_question()
+
 
     def evaluate_odd(self, selected):
         selected = selected.text
