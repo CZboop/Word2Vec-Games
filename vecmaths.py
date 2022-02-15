@@ -49,6 +49,10 @@ class CorrectScreen(Screen):
 class IncorrectScreen(Screen):
     pass
 
+# screen for selecting closest pair of words
+class ClosestScreen(Screen):
+    pass
+
 # made the window roughly phone sized to check how it will look there
 Window.size = (400,700)
 
@@ -60,6 +64,7 @@ ScreenManager:
     OddScreen:
     CorrectScreen:
     IncorrectScreen:
+    ClosestScreen:
 
 <MenuScreen>:
     name: 'Menu'
@@ -169,10 +174,14 @@ ScreenManager:
                     root.manager.current = 'Maths'
 
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Closest Pair"
                 size_hint: 1.0, 0.09
                 pos_hint: {"x":0.0, "y":0.63}
-                on_release: pass
+                on_release:
+                    app.set_closest_pair()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Closest'
+
             MDRaisedButton:
                 text: "Placeholder"
                 size_hint: 1.0, 0.09
@@ -312,10 +321,137 @@ ScreenManager:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Maths'
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Closest Pair"
                 size_hint: 1.0, 0.09
                 pos_hint: {"x":0.0, "y":0.63}
+                on_release:
+                    app.set_closest_pair()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Closest'
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.54}
                 on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.45}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.36}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.27}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.18}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.09}
+                on_release: pass
+            MDRaisedButton:
+                text: "Placeholder"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.0}
+                on_release: pass
+
+<ClosestScreen>:
+    id: closest
+    name: "Closest"
+    FloatLayout:
+        MDLabel:
+            text: "Which pair is the most related?"
+            pos_hint: {'center_x':.5, 'y':.73}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDRaisedButton:
+            id: pair_four
+            text: '...'
+            pos_hint: {"center_x":0.5, "y":0.2}
+            size_hint: 0.8, 0.1
+            font_style: 'H6'
+            on_press: app.evaluate_closest(self)
+
+        MDRaisedButton:
+            id: pair_three
+            text: '...'
+            pos_hint: {"center_x":0.5, "y":0.35}
+            size_hint: 0.8, 0.1
+            font_style: 'H6'
+            on_press: app.evaluate_closest(self)
+
+        MDRaisedButton:
+            id: pair_two
+            text: '...'
+            pos_hint: {"center_x":0.5, "y":0.5}
+            size_hint: 0.8, 0.1
+            font_style: 'H6'
+            on_press: app.evaluate_closest(self)
+
+        MDRaisedButton:
+            id: pair_one
+            text: '...'
+            pos_hint: {"center_x":0.5, "y":0.65}
+            size_hint: 0.8, 0.1
+            font_style: 'H6'
+            on_press: app.evaluate_closest(self)
+
+        MDToolbar:
+            id: toolbar
+            title: 'Menu'
+            pos_hint: {'top': 1}
+            elevation: 15
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+        MDToolbar:
+            id: odd_scorebar
+            title: 'Score: ' + str(app.closest_correct)
+            elevation: 15
+            pos_hint: {'bottom': 1}
+
+    MDNavigationDrawer:
+        id: nav_drawer
+        FloatLayout:
+            size_hint: 1.0, 1.0
+            MDLabel:
+                text: "Game Selection"
+                size_hint: 1.0, 0.1
+                pos_hint: {"x":0.3, "y":0.9}
+            MDRaisedButton:
+                text: "Odd One Out"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.81}
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Odd'
+            MDRaisedButton:
+                text: "Word Maths"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.72}
+                on_release:
+                    app.set_maths_question()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Maths'
+            MDRaisedButton:
+                text: "Closest Pair"
+                size_hint: 1.0, 0.09
+                pos_hint: {"x":0.0, "y":0.63}
+                on_release:
+                    app.set_closest_pair()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Closest'
             MDRaisedButton:
                 text: "Placeholder"
                 size_hint: 1.0, 0.09
@@ -360,6 +496,7 @@ class wordMaths(MDApp):
     odd_correct = 0
     odd_wrong = 0
     maths_score = 0
+    closest_correct = 0
 
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
@@ -381,6 +518,8 @@ class wordMaths(MDApp):
         sm.add_widget(self.maths_screen)
         self.odd_screen = OddScreen()
         sm.add_widget(self.odd_screen)
+        self.closest_screen = ClosestScreen()
+        sm.add_widget(self.closest_screen)
 
         self.correct_screen = CorrectScreen()
         sm.add_widget(self.correct_screen)
@@ -399,7 +538,7 @@ class wordMaths(MDApp):
                 origin='https://s3.amazonaws.com/dl4j-distribution/' +\
                             'GoogleNews-vectors-negative300.bin.gz')
         except:
-            print('Error with download')
+            print('Could not download dataset')
             raise
 
         self.model = gensim.models.KeyedVectors.load_word2vec_format(path, binary=True, limit=30000)
@@ -413,6 +552,9 @@ class wordMaths(MDApp):
         ans = self.model.most_similar(positive=[word1, word2])
         self.maths_ans = ans # this is the list of tuples and later will get values and can check if top match etc
         print(self.maths_ans[0][0], self.maths_ans[5][0])
+        # here there are a lot of results that are very similar to either of the starting words
+        # processing dataset/creating own could eliminate plurals, capitalisation etc.
+        # could try adjusting the equation or having a minimum linear algebra distance between each and the answer?
 
         self.root.get_screen('Maths').ids.maths_question.text =  '{} + {} = ?'.format(word1, word2)
 
@@ -444,10 +586,8 @@ class wordMaths(MDApp):
 
     def evaluate_odd(self, selected):
         selected = selected.text
-        # below is the key to accessing ids within screenmanager root obj
-        # print(self.root.get_screen('Odd').ids)
+
         if self.odd_options[selected] == True:
-            print('correct')
             self.root.transition.direction='left'
             self.root.current = 'Correct'
             Clock.schedule_once(self.back_to_odd, 2)
@@ -455,13 +595,10 @@ class wordMaths(MDApp):
             self.root.get_screen('Odd').ids.odd_scorebar.title = "Score: " + str(self.odd_correct)
 
         else:
-            print('incorrect')
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_odd, 2)
             self.odd_wrong += 1
-
-        print('clicked')
 
     def back_to_odd(self, *args):
         self.root.transition.direction='right'
@@ -487,17 +624,42 @@ class wordMaths(MDApp):
         for i,j in shuffled_options:
             self.odd_options[i] = j
 
-        print(self.odd_options)
         self.set_button_text()
 
     def set_button_text(self):
         app = MDApp.get_running_app()
-        print(app.root.ids)
         self.root.get_screen('Odd').ids.one.text = list(self.odd_options.keys())[0]
         self.root.get_screen('Odd').ids.two.text = list(self.odd_options.keys())[1]
         self.root.get_screen('Odd').ids.three.text = list(self.odd_options.keys())[2]
         self.root.get_screen('Odd').ids.four.text = list(self.odd_options.keys())[3]
-        # self.root.ids.odd.ids.one.text = 'yo'
+
+
+    def set_closest_pair(self):
+        pair1word1 = random.choice(self.model.index_to_key)
+        pair1word2 = random.choice([i[0] for i in self.model.most_similar(pair1word1, topn=20)])
+        self.pair1 = [pair1word1, pair1word2]
+        pair2word1 = random.choice(self.model.index_to_key)
+        pair2word2 = random.choice([i[0] for i in self.model.most_similar(pair2word1, topn=20)])
+        self.pair2 = [pair2word1, pair2word2]
+        pair3word1 = random.choice(self.model.index_to_key)
+        pair3word2 = random.choice([i[0] for i in self.model.most_similar(pair3word1, topn=50)])
+        self.pair3 = [pair3word1, pair3word2]
+        pair4word1 = random.choice(self.model.index_to_key)
+        pair4word2 = random.choice([i[0] for i in self.model.most_similar(pair4word1, topn=50)])
+        self.pair4 = [pair4word1, pair4word2]
+
+        closest_pair = sorted([self.pair1, self.pair2, self.pair3, self.pair4], key= lambda x: self.model.similarity(x[0], x[1]))[-1]
+
+        # print([(i, self.model.similarity(i[0], i[1])) for i in closest_pair])
+
+        self.root.get_screen('Closest').ids.pair_one.text = ", ".join(self.pair1)
+        self.root.get_screen('Closest').ids.pair_two.text = ", ".join(self.pair2)
+        self.root.get_screen('Closest').ids.pair_three.text = ", ".join(self.pair3)
+        self.root.get_screen('Closest').ids.pair_four.text = ", ".join(self.pair4)
+
+
+    def evaluate_closest(self):
+        pass
 
 # running the app
 if __name__ == '__main__':
