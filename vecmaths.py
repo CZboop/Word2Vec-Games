@@ -143,16 +143,14 @@ class wordGames(MDApp):
             Clock.schedule_once(self.back_to_maths, 2)
             self.maths_correct += 1
             self.maths_total += 1
-            self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_correct) + '/' + str(self.maths_total)
-            self.root.get_screen('Scores').ids.maths_score.text = 'Word Maths Score: ' + str(self.maths_correct) + '/' + str(self.maths_total)
+            self.update_all_scores()
 
         else:
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_maths, 2)
             self.maths_total += 1
-            self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_correct) + '/' + str(self.maths_total)
-            self.root.get_screen('Scores').ids.maths_score.text = 'Word Maths Score: ' + str(self.maths_correct) + '/' + str(self.maths_total)
+            self.update_all_scores()
 
         #later will prob do text processing which may affect how evaluate
         # also should strip in case user put space or pressed enter etc
@@ -162,6 +160,16 @@ class wordGames(MDApp):
         self.root.current = 'Maths'
         self.root.get_screen('Maths').ids.maths_ans.text = ""
         self.set_maths_question()
+
+    # this methods is for updating all the labels that display the scores
+    def update_all_scores(self):
+        self.root.get_screen('Odd').ids.odd_scorebar.title = "Score: " + str(self.odd_correct) + '/' + str(self.odd_total)
+        self.root.get_screen('Scores').ids.odd_score.text = 'Odd One Out Score: ' + str(self.odd_correct) + '/' + str(self.odd_total)
+        self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct) + '/' + str(self.closest_total)
+        self.root.get_screen('Scores').ids.closest_score.text = 'Closest Pair Score: ' + str(self.closest_correct) + '/' + str(self.closest_total)
+        self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_correct) + '/' + str(self.maths_total)
+        self.root.get_screen('Scores').ids.maths_score.text = 'Word Maths Score: ' + str(self.maths_correct) + '/' + str(self.maths_total)
+        self.root.get_screen('Scores').ids.total_score.text = 'Total: ' + str(int((self.odd_correct + self.closest_correct + self.maths_correct)/(self.odd_total + self.closest_total + self.maths_total) * 100)) + '%'
 
 
     def evaluate_odd(self, selected):
@@ -173,16 +181,15 @@ class wordGames(MDApp):
             Clock.schedule_once(self.back_to_odd, 2)
             self.odd_correct += 1
             self.odd_total +=1
-            self.root.get_screen('Odd').ids.odd_scorebar.title = "Score: " + str(self.odd_correct) + '/' + str(self.odd_total)
-            self.root.get_screen('Scores').ids.odd_score.text = 'Odd One Out Score: ' + str(self.odd_correct) + '/' + str(self.odd_total)
+            self.update_all_scores()
 
         else:
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_odd, 2)
             self.odd_total += 1
-            self.root.get_screen('Odd').ids.odd_scorebar.title = "Score: " + str(self.odd_correct) + '/' + str(self.odd_total)
-            self.root.get_screen('Scores').ids.odd_score.text = 'Odd One Out Score: ' + str(self.odd_correct) + '/' + str(self.odd_total)
+            self.update_all_scores()
+
 
     def back_to_odd(self, *args):
         self.root.transition.direction='right'
@@ -254,18 +261,14 @@ class wordGames(MDApp):
             Clock.schedule_once(self.back_to_closest, 2)
             self.closest_correct += 1
             self.closest_total += 1
-            self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct) + '/' + str(self.closest_total)
-            self.root.get_screen('Scores').ids.closest_score.text = 'Closest Pair Score: ' + str(self.closest_correct) + '/' + str(self.closest_total)
-
+            self.update_all_scores()
 
         else:
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_closest, 2)
             self.closest_total += 1
-            self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct) + '/' + str(self.closest_total)
-            self.root.get_screen('Scores').ids.closest_score.text = 'Closest Pair Score: ' + str(self.closest_correct) + '/' + str(self.closest_total)
-
+            self.update_all_scores()
 
     def back_to_closest(self, *args):
         self.root.transition.direction='right'
