@@ -119,13 +119,13 @@ ScreenManager:
 
         TextInput:
             id: maths_ans
-            size_hint: 1, 0.2
-            pos_hint: {'center_x':0.5, 'top':0.7}
+            size_hint: 0.8, 0.05
+            pos_hint: {'center_x':0.5, 'top':0.62}
 
         MDRaisedButton:
             text: 'Submit'
-            pos_hint: {"x":0.0, "y":0.0}
-            size_hint: 1.0, 0.12
+            pos_hint: {"center_x":0.5, "y":0.3}
+            size_hint: 0.8, 0.1
             font_style: 'H6'
             on_press: app.evaluate_maths_q()
 
@@ -135,6 +135,12 @@ ScreenManager:
             pos_hint: {'top': 1}
             elevation: 15
             left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+        MDToolbar:
+            id: maths_scorebar
+            title: 'Score: ' + str(app.maths_score)
+            elevation: 15
+            pos_hint: {'bottom': 1}
 
     MDNavigationDrawer:
         id: nav_drawer
@@ -277,7 +283,7 @@ ScreenManager:
             left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
 
         MDToolbar:
-            id: scorebar
+            id: odd_scorebar
             title: 'Score: ' + str(app.odd_correct)
             elevation: 15
             pos_hint: {'bottom': 1}
@@ -349,10 +355,11 @@ ScreenManager:
 '''
 
 class wordMaths(MDApp):
-    word = ""
+
     #some properties for later use
     odd_correct = 0
     odd_wrong = 0
+    maths_score = 0
 
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
@@ -411,12 +418,14 @@ class wordMaths(MDApp):
 
     def evaluate_maths_q(self):
         user_ans = self.root.get_screen('Maths').ids.maths_ans.text.lower()
-                
+
         if user_ans in [i[0].lower() for i in self.maths_ans]:
             print('correct')
             self.root.transition.direction='left'
             self.root.current = 'Correct'
             Clock.schedule_once(self.back_to_maths, 2)
+            self.maths_score += 1
+            self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_score)
         else:
             print('incorrect')
             self.root.transition.direction='left'
@@ -424,6 +433,7 @@ class wordMaths(MDApp):
             Clock.schedule_once(self.back_to_maths, 2)
 
         #later will prob do text processing which may affect how evaluate
+        # also should strip in case user put space or pressed enter etc
 
     def back_to_maths(self, *args):
         self.root.transition.direction='right'
@@ -442,7 +452,7 @@ class wordMaths(MDApp):
             self.root.current = 'Correct'
             Clock.schedule_once(self.back_to_odd, 2)
             self.odd_correct += 1
-            self.root.get_screen('Odd').ids.scorebar.title = "Score: " + str(self.odd_correct)
+            self.root.get_screen('Odd').ids.odd_scorebar.title = "Score: " + str(self.odd_correct)
 
         else:
             print('incorrect')
