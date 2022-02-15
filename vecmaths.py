@@ -26,6 +26,7 @@ import gensim
 from tensorflow.keras.utils import get_file
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
+import time
 
 # creating child classes of screen
 class MainScreen(Screen):
@@ -212,7 +213,7 @@ ScreenManager:
             font_style: 'H2'
             color: (1,1,1,1)
             halign: 'center'
-            
+
 <OddScreen>:
     id: odd
     name: "Odd"
@@ -405,11 +406,19 @@ class wordMaths(MDApp):
             print('correct')
             self.root.transition.direction='left'
             self.root.current = 'Correct'
+            Clock.schedule_once(self.back_to_odd, 2)
+
         else:
             print('incorrect')
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
+            Clock.schedule_once(self.back_to_odd, 2)
+
         print('clicked')
+
+    def back_to_odd(self, *args):
+        self.root.transition.direction='right'
+        self.root.current = 'Odd'
 
     def set_odd_options(self):
         self.odd_options = {}
