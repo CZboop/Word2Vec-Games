@@ -5,6 +5,7 @@ ScreenManager:
     CorrectScreen:
     IncorrectScreen:
     ClosestScreen:
+    ScoresScreen:
 
 <MenuScreen>:
     name: 'Menu'
@@ -48,6 +49,41 @@ ScreenManager:
                 app.set_odd_options()
                 root.manager.transition.direction='left'
                 root.manager.current = 'Odd'
+<ScoresScreen>:
+    name: 'Scores'
+    FloatLayout:
+        MDLabel:
+            id: odd_score
+            text: 'Odd One Out Score: ' + str(app.odd_correct)
+            pos_hint: {'center_x': .5, 'top': 0.85}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+        MDLabel:
+            id: maths_score
+            text: 'Word Maths Score: ' + str(app.maths_correct)
+            pos_hint: {'center_x': .5, 'top': 0.65}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDLabel:
+            id: closest_score
+            text: 'Closest Pair Score: ' + str(app.closest_correct)
+            pos_hint: {'center_x': .5, 'top': 0.45}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDToolbar:
+            id: toolbar
+            title: 'Menu'
+            pos_hint: {'top': 1}
+            elevation: 15
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
 
 <MathsScreen>:
     name: "Maths"
@@ -83,7 +119,7 @@ ScreenManager:
 
         MDToolbar:
             id: maths_scorebar
-            title: 'Score: ' + str(app.maths_score)
+            title: 'Score: ' + str(app.maths_correct)
             elevation: 15
             pos_hint: {'bottom': 1}
 
@@ -123,10 +159,12 @@ ScreenManager:
                     root.manager.current = 'Closest'
 
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Scores"
                 size_hint: 1.0, 0.09
                 pos_hint: {"x":0.0, "y":0.54}
-                on_release: pass
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Scores'
             MDRaisedButton:
                 text: "Placeholder"
                 size_hint: 1.0, 0.09
@@ -281,10 +319,12 @@ ScreenManager:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Closest'
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Scores"
                 size_hint: 1.0, 0.09
                 pos_hint: {"x":0.0, "y":0.54}
-                on_release: pass
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Scores'
             MDRaisedButton:
                 text: "Placeholder"
                 size_hint: 1.0, 0.09
@@ -405,10 +445,12 @@ ScreenManager:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Closest'
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Scores"
                 size_hint: 1.0, 0.09
                 pos_hint: {"x":0.0, "y":0.54}
-                on_release: pass
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Scores'
             MDRaisedButton:
                 text: "Placeholder"
                 size_hint: 1.0, 0.09

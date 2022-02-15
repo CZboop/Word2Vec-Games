@@ -28,29 +28,34 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 import time
 
-# creating child classes of screen
-class MathsScreen(Screen):
+# creating a screen manager
+class Manager(ScreenManager):
     pass
 
+# creating child classes of screen
+# for splash screen on startup
 class MenuScreen(Screen):
+    pass
+
+# for each game
+class MathsScreen(Screen):
     pass
 
 class OddScreen(Screen):
     pass
 
-# creating a screen manager
-class Manager(ScreenManager):
+class ClosestScreen(Screen):
     pass
 
-# creating screens for correct and incorrect answers
+# to show whenever there is a correct/incorrect answer
 class CorrectScreen(Screen):
     pass
 
 class IncorrectScreen(Screen):
     pass
 
-# screen for selecting closest pair of words
-class ClosestScreen(Screen):
+# and a screen to show scores for all games
+class ScoresScreen(Screen):
     pass
 
 # made the window roughly phone sized to check how it will look there
@@ -60,13 +65,15 @@ class wordMaths(MDApp):
 
     #some properties for later use
     odd_correct = 0
-    odd_wrong = 0
-    maths_score = 0
+    odd_total = 0
+    maths_correct = 0
+    maths_total = 0
     closest_correct = 0
+    closest_total = 0
+    odd_options = {"...":False, "...": False, "...":False, "...": False}
 
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
-        self.odd_options = {"...":False, "...": False, "...":False, "...": False}
         #changing window name from default
         self.title = 'Word2Vec Maths'
         # setting some colour themes
@@ -83,6 +90,9 @@ class wordMaths(MDApp):
         sm.add_widget(self.odd_screen)
         self.closest_screen = ClosestScreen()
         sm.add_widget(self.closest_screen)
+
+        self.scores_screen = ScoresScreen()
+        sm.add_widget(self.scores_screen)
 
         self.correct_screen = CorrectScreen()
         sm.add_widget(self.correct_screen)
@@ -128,17 +138,18 @@ class wordMaths(MDApp):
         user_ans = self.root.get_screen('Maths').ids.maths_ans.text.lower()
 
         if user_ans in [i[0].lower() for i in self.maths_ans]:
-            print('correct')
             self.root.transition.direction='left'
             self.root.current = 'Correct'
             Clock.schedule_once(self.back_to_maths, 2)
-            self.maths_score += 1
-            self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_score)
+            self.maths_correct += 1
+            self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_correct)
+            self.root.get_screen('Scores').ids.maths_score.text = 'Word Maths Score: ' + str(self.maths_correct)
+            self.maths_total += 1
         else:
-            print('incorrect')
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_maths, 2)
+            self.maths_total += 1
 
         #later will prob do text processing which may affect how evaluate
         # also should strip in case user put space or pressed enter etc
@@ -159,12 +170,13 @@ class wordMaths(MDApp):
             Clock.schedule_once(self.back_to_odd, 2)
             self.odd_correct += 1
             self.root.get_screen('Odd').ids.odd_scorebar.title = "Score: " + str(self.odd_correct)
-
+            self.root.get_screen('Scores').ids.odd_score.text = 'Odd One Out Score: ' + str(self.odd_correct)
+            self.odd_total +=1
         else:
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_odd, 2)
-            self.odd_wrong += 1
+            self.odd_total += 1
 
     def back_to_odd(self, *args):
         self.root.transition.direction='right'
@@ -236,11 +248,14 @@ class wordMaths(MDApp):
             Clock.schedule_once(self.back_to_closest, 2)
             self.closest_correct += 1
             self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct)
+            self.root.get_screen('Scores').ids.closest_score.text = 'Closest Pair Score: ' + str(self.closest_score)
+            self.closest_total += 1
 
         else:
             self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_closest, 2)
+            self.closest_total += 1
 
 
     def back_to_closest(self, *args):
