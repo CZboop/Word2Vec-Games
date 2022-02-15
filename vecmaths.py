@@ -29,7 +29,7 @@ from kivy.properties import ObjectProperty
 import time
 
 # creating child classes of screen
-class MainScreen(Screen):
+class MathsScreen(Screen):
     pass
 
 class MenuScreen(Screen):
@@ -56,7 +56,7 @@ Window.size = (400,700)
 builder_str = '''
 ScreenManager:
     MenuScreen:
-    MainScreen:
+    MathsScreen:
     OddScreen:
     CorrectScreen:
     IncorrectScreen:
@@ -104,13 +104,23 @@ ScreenManager:
                 root.manager.transition.direction='left'
                 root.manager.current = 'Odd'
 
-<MainScreen>:
-    name: "Main"
+<MathsScreen>:
+    name: "Maths"
     FloatLayout:
+        MDLabel:
+            id: maths_question
+            text: "Test"
+            pos_hint: {'center_x': .5, 'top': 0.85}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+
         TextInput:
             id: ans
-            size_hint: 1, 0.3
-            pos_hint: {'center_x':0.5, 'top':0.8}
+            size_hint: 1, 0.2
+            pos_hint: {'center_x':0.5, 'top':0.7}
 
         MDRaisedButton:
             text: 'Submit'
@@ -144,10 +154,14 @@ ScreenManager:
                     root.manager.current = 'Odd'
 
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Word Maths"
                 size_hint: 1.0, 0.09
                 pos_hint: {"x":0.0, "y":0.72}
-                on_release: pass
+                on_release:
+                    app.set_maths_question()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Maths'
+
             MDRaisedButton:
                 text: "Placeholder"
                 size_hint: 1.0, 0.09
@@ -223,7 +237,6 @@ ScreenManager:
             color: (1,1,1,1)
             halign: 'center'
 
-
         MDRaisedButton:
             id: four
             text: 'Word 4'
@@ -269,7 +282,6 @@ ScreenManager:
             elevation: 15
             pos_hint: {'bottom': 1}
 
-
     MDNavigationDrawer:
         id: nav_drawer
         FloatLayout:
@@ -286,10 +298,13 @@ ScreenManager:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Odd'
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Word Maths"
                 size_hint: 1.0, 0.09
                 pos_hint: {"x":0.0, "y":0.72}
-                on_release: pass
+                on_release:
+                    app.set_maths_question()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Maths'
             MDRaisedButton:
                 text: "Placeholder"
                 size_hint: 1.0, 0.09
@@ -355,8 +370,8 @@ class wordMaths(MDApp):
         sm = ScreenManager()
         self.welcome_screen = MenuScreen()
         sm.add_widget(self.welcome_screen)
-        self.main_screen = MainScreen()
-        sm.add_widget(self.main_screen)
+        self.maths_screen = MathsScreen()
+        sm.add_widget(self.maths_screen)
         self.odd_screen = OddScreen()
         sm.add_widget(self.odd_screen)
 
@@ -381,6 +396,8 @@ class wordMaths(MDApp):
             raise
 
         self.model = gensim.models.KeyedVectors.load_word2vec_format(path, binary=True, limit=30000)
+
+    def set_maths_question(self):
         rand_word = random.choice(self.model.index_to_key)
         print(rand_word)
         # will prob exclude words that have special chars, some in dataset seem to use hashtags as wildcards etc. uses underscores as spaces
@@ -388,9 +405,9 @@ class wordMaths(MDApp):
         word1 = random.choice(self.model.index_to_key)
         word2 = random.choice(self.model.index_to_key)
         word3 = random.choice(self.model.index_to_key)
-        ans = self.model.most_similar(positive=[word1, word2], negative=[word3])
+        ans = self.model.most_similar(positive=[word1, word2])[0][0]
 
-        print ('{} + {} - {} = {}'.format(word1, word2, word3, ans))
+        self.root.get_screen('Maths').ids.maths_question.text =  '{} + {} = {}'.format(word1, word2, ans)
 
     def maths_game(self):
         pass
@@ -400,9 +417,7 @@ class wordMaths(MDApp):
         print(answer)
 
     def evaluate_odd(self, selected):
-        # need to be able to set text of the buttons based on words in the question, then here evaluate whether correct
         selected = selected.text
-        # selected = list(self.odd_options)[2]
         # below is the key to accessing ids within screenmanager root obj
         # print(self.root.get_screen('Odd').ids)
         if self.odd_options[selected] == True:
