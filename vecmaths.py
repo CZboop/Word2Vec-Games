@@ -219,6 +219,12 @@ ScreenManager:
                 on_release: pass
 
 <CorrectScreen>:
+    canvas.before:
+        Color:
+            rgba: 0, 1, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
     name: 'Correct'
     id: correct
     FloatLayout:
@@ -226,10 +232,16 @@ ScreenManager:
             text: 'CORRECT!'
             pos_hint: {'center_x':.5, 'center_y':.5}
             font_style: 'H2'
-            color: (1,1,1,1)
+            color: (0,0,0,1)
             halign: 'center'
 
 <IncorrectScreen>:
+    canvas.before:
+        Color:
+            rgba: 1, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
     name: 'Incorrect'
     id: incorrect
     FloatLayout:
@@ -237,7 +249,7 @@ ScreenManager:
             text: 'INCORRECT :('
             pos_hint: {'center_x':.5, 'center_y':.5}
             font_style: 'H2'
-            color: (1,1,1,1)
+            color: (0,0,0,1)
             halign: 'center'
 
 <OddScreen>:
@@ -380,32 +392,32 @@ ScreenManager:
             id: pair_four
             text: '...'
             pos_hint: {"center_x":0.5, "y":0.2}
-            size_hint: 0.8, 0.1
-            font_style: 'H6'
+            size_hint: 0.9, 0.1
+            font_size: '20sp'
             on_press: app.evaluate_closest(self)
 
         MDRaisedButton:
             id: pair_three
             text: '...'
             pos_hint: {"center_x":0.5, "y":0.35}
-            size_hint: 0.8, 0.1
-            font_style: 'H6'
+            size_hint: 0.9, 0.1
+            font_size: '20sp'
             on_press: app.evaluate_closest(self)
 
         MDRaisedButton:
             id: pair_two
             text: '...'
             pos_hint: {"center_x":0.5, "y":0.5}
-            size_hint: 0.8, 0.1
-            font_style: 'H6'
+            size_hint: 0.9, 0.1
+            font_size: '20sp'
             on_press: app.evaluate_closest(self)
 
         MDRaisedButton:
             id: pair_one
             text: '...'
             pos_hint: {"center_x":0.5, "y":0.65}
-            size_hint: 0.8, 0.1
-            font_style: 'H6'
+            size_hint: 0.9, 0.1
+            font_size: '20sp'
             on_press: app.evaluate_closest(self)
 
         MDToolbar:
@@ -570,7 +582,7 @@ class wordMaths(MDApp):
             self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_score)
         else:
             print('incorrect')
-            self.root.transition.direction='left'
+            self.root.transition.direction='right'
             self.root.current = 'Incorrect'
             Clock.schedule_once(self.back_to_maths, 2)
 
