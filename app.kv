@@ -2,9 +2,10 @@ ScreenManager:
     MenuScreen:
     MathsScreen:
     OddScreen:
+    ClosestScreen:
+    MatchScreen:
     CorrectScreen:
     IncorrectScreen:
-    ClosestScreen:
     ScoresScreen:
 
 <MenuScreen>:
@@ -131,19 +132,22 @@ ScreenManager:
                         root.manager.transition.direction='left'
                         root.manager.current = 'Closest'
                 MDRaisedButton:
-                    text: "Scores"
+                    text: "Match Pairs"
                     size_hint: 1.0, 0.18
                     pos_hint: {"x":0.0, "y":0.18}
                     font_size: Window.width/20
                     on_release:
+                        app.set_pairs_match()
                         root.manager.transition.direction='left'
-                        root.manager.current = 'Scores'
+                        root.manager.current = 'Match'
                 MDRaisedButton:
-                    text: "Placeholder"
+                    text: "Scores"
                     size_hint: 1.0, 0.18
                     pos_hint: {"x":0.0, "y":0.0}
                     font_size: Window.width/20
-                    on_release: pass
+                    on_release:
+                        root.manager.transition.direction='left'
+                        root.manager.current = 'Scores'
 
 
 <MathsScreen>:
@@ -220,19 +224,22 @@ ScreenManager:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Closest'
             MDRaisedButton:
-                text: "Scores"
+                text: "Match Pairs"
                 size_hint: 1.0, 0.18
                 pos_hint: {"x":0.0, "y":0.18}
                 font_size: Window.width/20
                 on_release:
+                    app.set_pairs_match()
                     root.manager.transition.direction='left'
-                    root.manager.current = 'Scores'
+                    root.manager.current = 'Match'
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Scores"
                 size_hint: 1.0, 0.18
                 pos_hint: {"x":0.0, "y":0.0}
                 font_size: Window.width/20
-                on_release: pass
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Scores'
 
 
 <CorrectScreen>:
@@ -362,19 +369,22 @@ ScreenManager:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Closest'
             MDRaisedButton:
-                text: "Scores"
+                text: "Match Pairs"
                 size_hint: 1.0, 0.18
                 pos_hint: {"x":0.0, "y":0.18}
                 font_size: Window.width/20
                 on_release:
+                    app.set_pairs_match()
                     root.manager.transition.direction='left'
-                    root.manager.current = 'Scores'
+                    root.manager.current = 'Match'
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Scores"
                 size_hint: 1.0, 0.18
                 pos_hint: {"x":0.0, "y":0.0}
                 font_size: Window.width/20
-                on_release: pass
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Scores'
 
 
 <ClosestScreen>:
@@ -470,16 +480,162 @@ ScreenManager:
                     root.manager.transition.direction='left'
                     root.manager.current = 'Closest'
             MDRaisedButton:
-                text: "Scores"
+                text: "Match Pairs"
                 size_hint: 1.0, 0.18
                 pos_hint: {"x":0.0, "y":0.18}
                 font_size: Window.width/20
                 on_release:
+                    app.set_pairs_match()
                     root.manager.transition.direction='left'
-                    root.manager.current = 'Scores'
+                    root.manager.current = 'Match'
             MDRaisedButton:
-                text: "Placeholder"
+                text: "Scores"
                 size_hint: 1.0, 0.18
                 pos_hint: {"x":0.0, "y":0.0}
                 font_size: Window.width/20
-                on_release: pass
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Scores'
+
+<MatchScreen>:
+    id: match
+    name: "Match"
+    FloatLayout:
+        MDLabel:
+            text: "Match the pairs of related words"
+            pos_hint: {'center_x':.5, 'y':.73}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDRaisedButton:
+            id: match_one
+            text: 'One'
+            pos_hint: {"center_x":0.25, "y":0.65}
+            size_hint: 0.4, 0.1
+            font_style: 'H6'
+            on_press: pass
+
+        MDRaisedButton:
+            id: match_two
+            text: 'Word 2'
+            pos_hint: {"center_x":0.25, "y":0.5}
+            size_hint: 0.4, 0.1
+            font_style: 'H6'
+            on_press: pass
+
+        MDRaisedButton:
+            id: match_three
+            text: 'Word 3'
+            pos_hint: {"center_x":0.25, "y":0.35}
+            size_hint: 0.4, 0.1
+            font_style: 'H6'
+            on_press: pass
+
+        MDRaisedButton:
+            id: match_four
+            text: 'Word 4'
+            pos_hint: {"center_x":0.25, "y":0.2}
+            size_hint: 0.4, 0.1
+            font_style: 'H6'
+            on_press: pass
+
+        MDRaisedButton:
+            id: match_five
+            text: 'Word 5'
+            pos_hint: {"center_x":0.75, "y":0.65}
+            size_hint: 0.4, 0.1
+            font_style: 'H6'
+            on_press: pass
+
+        MDRaisedButton:
+            id: match_six
+            text: 'Word 6'
+            pos_hint: {"center_x":0.75, "y":0.5}
+            size_hint: 0.4, 0.1
+            font_style: 'H6'
+            on_press: pass
+
+        MDRaisedButton:
+            id: match_seven
+            text: 'Word 7'
+            pos_hint: {"center_x":0.75, "y":0.35}
+            size_hint: 0.4, 0.1
+            font_style: 'H6'
+            on_press: pass
+
+        MDRaisedButton:
+            id: match_eight
+            text: 'Word 8'
+            pos_hint: {"center_x":0.75, "y":0.2}
+            size_hint: 0.4, 0.1
+            font_style: 'H6'
+            on_press: pass
+
+
+        MDToolbar:
+            id: toolbar
+            title: 'Menu'
+            pos_hint: {'top': 1}
+            elevation: 15
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+        MDToolbar:
+            id: match_scorebar
+            title: 'Score: ' + 'TODO'
+            elevation: 15
+            pos_hint: {'bottom': 1}
+
+    MDNavigationDrawer:
+        id: nav_drawer
+        FloatLayout:
+            size_hint: 1.0, 1.0
+            MDLabel:
+                text: "Game Selection"
+                size_hint: 1.0, 0.1
+                pos_hint: {"center_x":0.8, "y":0.9}
+                font_size: Window.width/20
+            MDRaisedButton:
+                text: "Odd One Out"
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.72}
+                font_size: Window.width/20
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Odd'
+            MDRaisedButton:
+                text: "Word Maths"
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.54}
+                font_size: Window.width/20
+                on_release:
+                    app.set_maths_question()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Maths'
+            MDRaisedButton:
+                text: "Closest Pair"
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.36}
+                font_size: Window.width/20
+                on_release:
+                    app.set_closest_pair()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Closest'
+            MDRaisedButton:
+                text: "Match Pairs"
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.18}
+                font_size: Window.width/20
+                on_release:
+                    app.set_pairs_match()
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Match'
+            MDRaisedButton:
+                text: "Scores"
+                size_hint: 1.0, 0.18
+                pos_hint: {"x":0.0, "y":0.0}
+                font_size: Window.width/20
+                on_release:
+                    root.manager.transition.direction='left'
+                    root.manager.current = 'Scores'

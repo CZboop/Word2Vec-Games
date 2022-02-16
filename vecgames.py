@@ -1,9 +1,4 @@
-import cv2
 import random
-import numpy as np
-import matplotlib
-from matplotlib import cm
-import threading
 from functools import partial
 from kivy.app import App
 from kivy.clock import Clock
@@ -18,15 +13,14 @@ from kivy.uix.button import Button
 from kivy.graphics import Color
 from kivy.graphics import Rectangle
 from kivy.core.window import Window
-from kivy.uix.colorpicker import ColorPicker
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel, MDIcon
-from datetime import datetime
 import gensim
 from tensorflow.keras.utils import get_file
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
-import time
+from kivy.utils import get_color_from_hex
+from kivy.animation import Animation
 
 # creating a screen manager
 class Manager(ScreenManager):
@@ -45,6 +39,9 @@ class OddScreen(Screen):
     pass
 
 class ClosestScreen(Screen):
+    pass
+
+class MatchScreen(Screen):
     pass
 
 # to show whenever there is a correct/incorrect answer
@@ -71,6 +68,8 @@ class wordGames(MDApp):
     closest_correct = 0
     closest_total = 0
     odd_options = {"...":False, "...": False, "...":False, "...": False}
+    overlay_color = get_color_from_hex("#6042e4")
+    progress_round_color = get_color_from_hex("#ef514b")
 
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
@@ -90,6 +89,8 @@ class wordGames(MDApp):
         sm.add_widget(self.odd_screen)
         self.closest_screen = ClosestScreen()
         sm.add_widget(self.closest_screen)
+        self.match_screen = MatchScreen()
+        sm.add_widget(self.match_screen)
 
         self.scores_screen = ScoresScreen()
         sm.add_widget(self.scores_screen)
@@ -274,6 +275,26 @@ class wordGames(MDApp):
         self.root.transition.direction='right'
         self.root.current = 'Closest'
         self.set_closest_pair()
+
+    def set_pairs_match(self):
+        pair1starter = random.choice(self.model.index_to_key)
+        self.match_pair1 = [pair1starter, random.choice([i[0] for i in self.model.most_similar(pair1starter)])]
+        pair2starter = random.choice(self.model.index_to_key)
+        self.match_pair2 = [pair2starter, random.choice([i[0] for i in self.model.most_similar(pair2starter)])]
+        pair3starter = random.choice(self.model.index_to_key)
+        self.match_pair3 = [pair3starter, random.choice([i[0] for i in self.model.most_similar(pair3starter)])]
+        pair4starter = random.choice(self.model.index_to_key)
+        self.match_pair4 = [pair4starter, random.choice([i[0] for i in self.model.most_similar(pair4starter)])]
+
+        shuffled_pairs = random.sample([self.match_pair1[0],self.match_pair2[0],self.match_pair3[0],self.match_pair4[0]], 4) + random.sample([self.match_pair1[1],self.match_pair2[1],self.match_pair3[1],self.match_pair4[1]], 4)
+        print(self.match_pair1, self.match_pair2, self.match_pair3, self.match_pair4)
+        for i in shuffled_pairs:
+            pass
+
+    def on_select(self, instance):
+        pass
+
+
 
 # running the app
 if __name__ == '__main__':
