@@ -68,8 +68,11 @@ class wordGames(MDApp):
     closest_correct = 0
     closest_total = 0
     odd_options = {"...":False, "...": False, "...":False, "...": False}
-    overlay_color = get_color_from_hex("#6042e4")
-    progress_round_color = get_color_from_hex("#ef514b")
+    selected_count = 0
+    selected1 = None
+    selected2 = None
+    match_correct = 0
+    match_total = 0
 
     # building the app with the .kv string above and screen class instances for each screen
     def build(self):
@@ -288,13 +291,67 @@ class wordGames(MDApp):
 
         shuffled_pairs = random.sample([self.match_pair1[0],self.match_pair2[0],self.match_pair3[0],self.match_pair4[0]], 4) + random.sample([self.match_pair1[1],self.match_pair2[1],self.match_pair3[1],self.match_pair4[1]], 4)
         print(self.match_pair1, self.match_pair2, self.match_pair3, self.match_pair4)
-        for i in shuffled_pairs:
-            pass
+
+        self.root.get_screen('Match').ids.match_1.text = shuffled_pairs[0]
+        self.root.get_screen('Match').ids.match_2.text = shuffled_pairs[1]
+        self.root.get_screen('Match').ids.match_3.text = shuffled_pairs[2]
+        self.root.get_screen('Match').ids.match_4.text = shuffled_pairs[3]
+        self.root.get_screen('Match').ids.match_5.text = shuffled_pairs[4]
+        self.root.get_screen('Match').ids.match_6.text = shuffled_pairs[5]
+        self.root.get_screen('Match').ids.match_7.text = shuffled_pairs[6]
+        self.root.get_screen('Match').ids.match_8.text = shuffled_pairs[7]
 
     def on_select(self, instance):
-        pass
+        self.selected_clr = [0.1,0.1,0.8,1]
+        instance.md_bg_color = self.selected_clr
+        self.selected_count += 1
 
+        if self.selected_count==2:
+            eval = self.evaluate_pair()
+            self.handle_pair_submit(eval)
 
+    def evaluate_pair(self):
+        for child in self.root.get_screen('Match').children:
+            for subchild in child.children:
+                try:
+                    print(subchild.md_bg_color)
+                    if subchild.md_bg_color == self.selected_clr:
+                        if self.selected1 == None:
+                            self.selected1 = subchild.text
+                        else:
+                            self.selected2 = subchild.text
+                except:
+                    pass
+
+        for i in [self.match_pair1, self.match_pair2, self.match_pair3, self.match_pair4]:
+            if self.selected1 in i and self.selected2 in i:
+                return True
+        return False
+
+    def handle_pair_submit(self, correct):
+        # resetting and disabling
+        self.selected1 = None
+        self.selected2 = None
+        self.selected_count = 0
+
+        default_clr = [0.12941176470588237, 0.5882352941176471, 0.9529411764705882, 1.0]
+
+        for child in self.root.get_screen('Match').children:
+            for subchild in child.children:
+                try:
+                    if subchild.md_bg_color == self.selected_clr:
+                        if correct == True:
+                            subchild.md_bg_color_disabled = [0,1,0,1]
+                            subchild.disabled = True
+                        else:
+                            subchild.md_bg_color = default_clr
+                except:
+                    pass
+        if correct:
+            self.match_correct += 1
+        self.match_total += 1
+
+        # print(self.match_correct, self.match_total)
 
 # running the app
 if __name__ == '__main__':
