@@ -172,8 +172,13 @@ class wordGames(MDApp):
         self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct) + '/' + str(self.closest_total)
         self.root.get_screen('Scores').ids.closest_score.text = 'Closest Pair Score: ' + str(self.closest_correct) + '/' + str(self.closest_total)
         self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_correct) + '/' + str(self.maths_total)
+        self.root.get_screen('Match').ids.match_scorebar.title = "Score: " + str(self.match_correct) + '/' + str(self.match_total)
         self.root.get_screen('Scores').ids.maths_score.text = 'Word Maths Score: ' + str(self.maths_correct) + '/' + str(self.maths_total)
-        self.root.get_screen('Scores').ids.total_score.text = 'Total: ' + str(int((self.odd_correct + self.closest_correct + self.maths_correct)/(self.odd_total + self.closest_total + self.maths_total) * 100)) + '%'
+        try:
+            total_score = int((self.odd_correct + self.closest_correct + self.maths_correct)/(self.odd_total + self.closest_total + self.maths_total) * 100)
+        except:
+            total_score = 0
+        self.root.get_screen('Scores').ids.total_score.text = 'Total: ' + str(total_score) + '%'
 
 
     def evaluate_odd(self, selected):
@@ -280,6 +285,7 @@ class wordGames(MDApp):
         self.set_closest_pair()
 
     def set_pairs_match(self):
+        self.matched_this_round = 0
         pair1starter = random.choice(self.model.index_to_key)
         self.match_pair1 = [pair1starter, random.choice([i[0] for i in self.model.most_similar(pair1starter)])]
         pair2starter = random.choice(self.model.index_to_key)
@@ -314,7 +320,6 @@ class wordGames(MDApp):
         for child in self.root.get_screen('Match').children:
             for subchild in child.children:
                 try:
-                    print(subchild.md_bg_color)
                     if subchild.md_bg_color == self.selected_clr:
                         if self.selected1 == None:
                             self.selected1 = subchild.text
@@ -334,8 +339,9 @@ class wordGames(MDApp):
         self.selected2 = None
         self.selected_count = 0
 
-        default_clr = [0.12941176470588237, 0.5882352941176471, 0.9529411764705882, 1.0]
+        self.default_clr = [0.12941176470588237, 0.5882352941176471, 0.9529411764705882, 1.0]
 
+        # disabling correct matches and setting to green background, resetting incorrect matches
         for child in self.root.get_screen('Match').children:
             for subchild in child.children:
                 try:
@@ -344,14 +350,43 @@ class wordGames(MDApp):
                             subchild.md_bg_color_disabled = [0,1,0,1]
                             subchild.disabled = True
                         else:
-                            subchild.md_bg_color = default_clr
+                            subchild.md_bg_color = self.default_clr
                 except:
                     pass
         if correct:
             self.match_correct += 1
+            self.matched_this_round += 1
         self.match_total += 1
 
-        # print(self.match_correct, self.match_total)
+        # resetting the pairs once all correct
+        if self.matched_this_round == 4:
+            self.reset_match_buttons()
+            self.set_pairs_match()
+
+        # update the scores after ensuring that the new game is added
+        self.update_all_scores()
+        # and add to the score screen too
+
+
+    def reset_match_buttons(self):
+        self.root.get_screen('Match').ids.match_1.md_bg_color = self.default_clr
+        self.root.get_screen('Match').ids.match_2.md_bg_color = self.default_clr
+        self.root.get_screen('Match').ids.match_3.md_bg_color = self.default_clr
+        self.root.get_screen('Match').ids.match_4.md_bg_color = self.default_clr
+        self.root.get_screen('Match').ids.match_5.md_bg_color = self.default_clr
+        self.root.get_screen('Match').ids.match_6.md_bg_color = self.default_clr
+        self.root.get_screen('Match').ids.match_7.md_bg_color = self.default_clr
+        self.root.get_screen('Match').ids.match_8.md_bg_color = self.default_clr
+
+        self.root.get_screen('Match').ids.match_1.disabled = False
+        self.root.get_screen('Match').ids.match_2.disabled = False
+        self.root.get_screen('Match').ids.match_3.disabled = False
+        self.root.get_screen('Match').ids.match_4.disabled = False
+        self.root.get_screen('Match').ids.match_5.disabled = False
+        self.root.get_screen('Match').ids.match_6.disabled = False
+        self.root.get_screen('Match').ids.match_7.disabled = False
+        self.root.get_screen('Match').ids.match_8.disabled = False
+
 
 # running the app
 if __name__ == '__main__':
