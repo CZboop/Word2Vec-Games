@@ -172,10 +172,11 @@ class wordGames(MDApp):
         self.root.get_screen('Closest').ids.closest_scorebar.title = "Score: " + str(self.closest_correct) + '/' + str(self.closest_total)
         self.root.get_screen('Scores').ids.closest_score.text = 'Closest Pair Score: ' + str(self.closest_correct) + '/' + str(self.closest_total)
         self.root.get_screen('Maths').ids.maths_scorebar.title = "Score: " + str(self.maths_correct) + '/' + str(self.maths_total)
-        self.root.get_screen('Match').ids.match_scorebar.title = "Score: " + str(self.match_correct) + '/' + str(self.match_total)
         self.root.get_screen('Scores').ids.maths_score.text = 'Word Maths Score: ' + str(self.maths_correct) + '/' + str(self.maths_total)
+        self.root.get_screen('Match').ids.match_scorebar.title = "Score: " + str(self.match_correct) + '/' + str(self.match_total)
+        self.root.get_screen('Scores').ids.match_score.text = 'Pair Match Score: ' + str(self.match_correct) + '/' + str(self.match_total)
         try:
-            total_score = int((self.odd_correct + self.closest_correct + self.maths_correct)/(self.odd_total + self.closest_total + self.maths_total) * 100)
+            total_score = int((self.odd_correct + self.closest_correct + self.maths_correct + self.match_correct)/(self.odd_total + self.closest_total + self.maths_total + self.match_total) * 100)
         except:
             total_score = 0
         self.root.get_screen('Scores').ids.total_score.text = 'Total: ' + str(total_score) + '%'
@@ -233,7 +234,6 @@ class wordGames(MDApp):
         self.root.get_screen('Odd').ids.three.text = list(self.odd_options.keys())[2]
         self.root.get_screen('Odd').ids.four.text = list(self.odd_options.keys())[3]
 
-
     def set_closest_pair(self):
         try:
             pair1word1 = random.choice(self.model.index_to_key)
@@ -251,7 +251,7 @@ class wordGames(MDApp):
 
             self.closest_pair = sorted([self.pair1, self.pair2, self.pair3, self.pair4], key= lambda x: self.model.similarity(x[0], x[1]))[-1]
 
-            print([(i, self.model.similarity(i[0], i[1])) for i in self.closest_pair])
+            # print([(i, self.model.similarity(i[0], i[1])) for i in self.closest_pair])
 
             self.root.get_screen('Closest').ids.pair_one.text = ", ".join(self.pair1)
             self.root.get_screen('Closest').ids.pair_two.text = ", ".join(self.pair2)
@@ -261,7 +261,6 @@ class wordGames(MDApp):
         # was getting ocassional gensim error with similarity comparison, this seems to fix although would be good to revisit
         except:
             self.set_closest_pair()
-
 
     def evaluate_closest(self, selected):
         if selected.text.split(", ") == self.closest_pair:
@@ -363,10 +362,8 @@ class wordGames(MDApp):
             self.reset_match_buttons()
             self.set_pairs_match()
 
-        # update the scores after ensuring that the new game is added
+        # update the scores
         self.update_all_scores()
-        # and add to the score screen too
-
 
     def reset_match_buttons(self):
         self.root.get_screen('Match').ids.match_1.md_bg_color = self.default_clr

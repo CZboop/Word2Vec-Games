@@ -65,7 +65,7 @@ ScreenManager:
         MDLabel:
             id: maths_score
             text: 'Word Maths Score: ' + str(app.maths_correct) + '/' + str(app.maths_total)
-            pos_hint: {'center_x': .5, 'top': 0.65}
+            pos_hint: {'center_x': .5, 'top': 0.7}
             size_hint: 1.0, 0.2
             font_style: 'H5'
             color: (1,1,1,1)
@@ -74,7 +74,16 @@ ScreenManager:
         MDLabel:
             id: closest_score
             text: 'Closest Pair Score: ' + str(app.closest_correct) + '/' + str(app.closest_total)
-            pos_hint: {'center_x': .5, 'top': 0.45}
+            pos_hint: {'center_x': .5, 'top': 0.55}
+            size_hint: 1.0, 0.2
+            font_style: 'H5'
+            color: (1,1,1,1)
+            halign: 'center'
+
+        MDLabel:
+            id: match_score
+            text: 'Pair Match Score: ' + str(app.match_correct) + '/' + str(app.match_total)
+            pos_hint: {'center_x': .5, 'top': 0.4}
             size_hint: 1.0, 0.2
             font_style: 'H5'
             color: (1,1,1,1)
