@@ -74,7 +74,6 @@ class wordGames(MDApp):
     match_correct = 0
     match_total = 0
 
-    # building the app with the .kv string above and screen class instances for each screen
     def build(self):
         #changing window name from default
         self.title = 'Word2Vec Games'
@@ -209,14 +208,18 @@ class wordGames(MDApp):
     def set_odd_options(self):
         self.odd_options = {}
         base_word = random.choice(self.model.index_to_key)
-        related = self.model.most_similar(base_word)[:2]
+        related = []
+        for i in self.model.most_similar(base_word):
+            if i[0].startswith(base_word) == False and base_word.startswith(i[0]) == False and i[0].lower() != base_word.lower():
+                related.append(i[0])
+        related = related[:2]
         unrelated = random.choice(self.model.index_to_key)
         # and have a check to see that the unrelated is not also in the most similar longer list
         self.odd_options[base_word] = False
         self.odd_options[unrelated] = True
 
         for i in related:
-            self.odd_options[i[0]] = False
+            self.odd_options[i] = False
 
         keys =  list(self.odd_options.keys())
         random.shuffle(keys)
